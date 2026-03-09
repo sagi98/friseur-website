@@ -286,7 +286,7 @@ body {
   transform: translateZ(0);
   position: relative;
 
-  margin-top: 4vh;
+  margin-top: 6vh;
 
   margin-left: var(--side-space);
   margin-right: var(--side-space);
