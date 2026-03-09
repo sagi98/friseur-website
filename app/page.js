@@ -29,6 +29,17 @@ export default function Home() {
           <h1>HERRENSALON</h1>
         </div>
       </header>
+
+      {/* VIDEO SECTION */}
+      <section className="hero-video">
+        <video
+          src="/salon.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      </section>
     </main>
   );
 }

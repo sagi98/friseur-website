@@ -27,15 +27,16 @@ body {
 
 .header {
   width: 100%;
-  padding: 28px 24px 20px;
+  padding: 10px 16px 0px;
   background: #f3f3f3;
 }
 
 .header-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 42px;
+  align-items: center;
+  margin-bottom: 6px;
+  padding-top: 6px;
 }
 
 .logo {
@@ -60,7 +61,7 @@ body {
   background: transparent;
   cursor: pointer;
   padding: 0;
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .menu-button span {
@@ -105,7 +106,20 @@ body {
 
 .header-title h1 {
   font-size: 2.2rem;
-  font-weight: 600;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
   letter-spacing: 0.04em;
-  color: #000;
+  transform: translateY(6px);
+  color: #171819;
+}
+
+.hero-video {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.hero-video video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
