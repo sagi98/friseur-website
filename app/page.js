@@ -24,10 +24,7 @@ export default function Home() {
             <span></span>
           </button>
         </div>
-
-        <div className="header-title">
-          <h1>HERRENSALON</h1>
-        </div>
+        
       </header>
 
       {/* VIDEO SECTION */}
@@ -39,6 +36,8 @@ export default function Home() {
           loop
           playsInline
         />
+
+          <h1 className="hero-title">HERRENSALON</h1>
       </section>
     </main>
   );

@@ -1,3 +1,8 @@
+:root {
+  --side-space: 16px;
+  --video-radius: 18px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -27,7 +32,7 @@ body {
 
 .header {
   width: 100%;
-  padding: 10px 16px 0px;
+  padding: 10px var(--side-space) 0;
   background: #f3f3f3;
 }
 
@@ -61,7 +66,6 @@ body {
   background: transparent;
   cursor: pointer;
   padding: 0;
-  margin-top: 0;
 }
 
 .menu-button span {
@@ -73,17 +77,9 @@ body {
   transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
 }
 
-.menu-button span:nth-child(1) {
-  top: 0;
-}
-
-.menu-button span:nth-child(2) {
-  top: 11px;
-}
-
-.menu-button span:nth-child(3) {
-  top: 22px;
-}
+.menu-button span:nth-child(1) { top: 0; }
+.menu-button span:nth-child(2) { top: 11px; }
+.menu-button span:nth-child(3) { top: 22px; }
 
 .menu-button.open span:nth-child(1) {
   top: 11px;
@@ -99,27 +95,63 @@ body {
   transform: rotate(-45deg);
 }
 
-.header-title {
-  display: flex;
-  justify-content: center;
-}
-
-.header-title h1 {
-  font-size: 2.2rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  transform: translateY(6px);
-  color: #171819;
-}
+/* HERO VIDEO */
 
 .hero-video {
+  position: relative;
   width: 100%;
+  padding: 0 var(--side-space);
   margin-top: 20px;
 }
 
+/* Video */
 .hero-video video {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: var(--video-radius);
+}
+
+/* dunkles Overlay im oberen Bereich des Videos */
+.hero-video::before {
+  content: "";
+  position: absolute;
+  left: var(--side-space);
+  right: var(--side-space);
+  top: 0;
+  height: 90px;
+
+  border-top-left-radius: var(--video-radius);
+  border-top-right-radius: var(--video-radius);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.78),
+    rgba(0,0,0,0.56),
+    rgba(0,0,0,0)
+  );
+
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Titel über Video */
+
+.hero-title {
+  position: absolute;
+  top: 1%;
+  left: 0;
+  right: 0;
+  text-align: center;
+
+  color: #fff;
+
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+
+  z-index: 2;
+
+  text-shadow: 0 3px 12px rgba(0,0,0,0.45);
 }
