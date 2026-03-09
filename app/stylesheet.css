@@ -112,6 +112,7 @@ body {
   height: auto;
   display: block;
   border-radius: var(--video-radius);
+  transform: translateZ(0);
 }
 
 /* dunkles Overlay im oberen Bereich des Videos */
@@ -281,6 +282,8 @@ body {
 
 .opening-card {
 
+  will-change: transform;
+  transform: translateZ(0);
   position: relative;
 
   margin-top: 4vh;
@@ -303,7 +306,7 @@ body {
 
   background: rgba(0,0,0,0.35);
 
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
 
   border: 1px solid rgba(255,255,255,0.08);
 
