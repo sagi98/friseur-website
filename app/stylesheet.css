@@ -139,19 +139,68 @@ body {
 
 .hero-title {
   position: absolute;
-  top: 1%;
+  top: 2%;
   left: 0;
   right: 0;
   text-align: center;
 
-  color: #fff;
+  color: #f3f3f3;
 
   font-size: clamp(1.8rem, 4vw, 2.2rem);
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: 0.04em;
+  
+   font-family: "Playfair Display", serif;
+   font-weight: 200;
+   letter-spacing: 0.06em;
 
   z-index: 2;
 
   text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+}
+
+.hero-actions {
+  position: absolute;
+  bottom: 16px;
+  left: var(--side-space);
+  right: var(--side-space);
+  display: flex;
+  gap: 8px;
+}
+
+.hero-actions {
+  position: absolute;
+  bottom: 14px;
+  left: var(--side-space);
+  right: var(--side-space);
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero-action {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  color: #f3f3f3;
+  font-size: 0.65rem;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.hero-action:hover {
+  opacity: 1;
+}
+
+.hero-icon {
+  width: 26px;
+  height: 26px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
 }
