@@ -6,44 +6,56 @@ import "./stylesheet.css";
 export default function Home() {
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-
 
   useEffect(() => {
-    let ticking = false;
+
+    const card = document.querySelector(".opening-card");
+    const overlay = document.querySelector(".video-dark-overlay");
+    const title = document.querySelector(".opening-title");
+    const times = document.querySelector(".opening-times");
 
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scroll = Math.round(window.scrollY);
-          setScrollY(scroll);
-          ticking = false;
-        });
 
-        ticking = true;
+      const scroll = Math.round(window.scrollY);
+
+      const parallax = Math.round(Math.min(scroll * 0.7, 260));
+      const opacity = Math.min(scroll / 180, 1);
+      const darkness = Math.min(scroll / 300, 0.55);
+
+      if (card) {
+        card.style.transform = `translate3d(0, ${-parallax}px, 0)`;
       }
+
+      if (overlay) {
+        overlay.style.opacity = darkness;
+      }
+
+      if (title) {
+        title.style.opacity = opacity;
+      }
+
+      if (times) {
+        times.style.opacity = opacity;
+      }
+
     };
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    return () => window.removeEventListener("scroll", handleScroll);
 
-  const parallax = Math.round(Math.min(scrollY * 0.7, 260));
-  const titleOpacity = Math.min(scrollY / 180, 1);
-  const videoDarkness = Math.min(scrollY / 300, 0.55);
-
+  }, []);
 
   const scrollToOpening = () => {
-  const section = document.getElementById("opening");
+    const section = document.getElementById("opening");
 
-  if (section) {
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-};
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  };
 
   return (
     <main className="page">
@@ -77,20 +89,14 @@ export default function Home() {
           playsInline
         />
 
-        <div
-          className="video-dark-overlay"
-          style={{ opacity: videoDarkness }}
-        />
-
+        <div className="video-dark-overlay" />
 
         <div className="hero-title">
           <span className="hero-title-main">BARBERSHOP</span>
           <span className="hero-title-sub">Men’s Hair & Beard</span>
         </div>
 
-        {/* ICON BUTTONS */}
         <div className="hero-actions">
-
 
           <button className="hero-action" onClick={scrollToOpening}>
             <div className="hero-icon-wrapper">
@@ -101,7 +107,6 @@ export default function Home() {
             </div>
             <span>Öffnungszeiten</span>
           </button>
-
 
           <button className="hero-action">
             <div className="hero-icon-wrapper">
@@ -114,7 +119,6 @@ export default function Home() {
             </div>
             <span>Unser Team</span>
           </button>
-
 
           <button className="hero-action">
             <div className="hero-icon-wrapper">
@@ -130,45 +134,39 @@ export default function Home() {
 
       </section>
 
+
       {/* OPENING HOURS CARD */}
 
-     <section
-      id="opening"
-      className="opening-card"
-      style={{ transform: `translate3d(0, ${-parallax}px, 0)` }}
-    >
+      <section id="opening" className="opening-card">
 
-      <div className="opening-card-inner">
+        <div className="opening-card-inner">
 
-        <h2
-          className="opening-title"
-          style={{ opacity: titleOpacity }}
-        >
-          Öffnungszeiten
-        </h2>
+          <h2 className="opening-title">
+            Öffnungszeiten
+          </h2>
 
-        <div className="opening-times" style={{ opacity: titleOpacity }}>
+          <div className="opening-times">
 
-          <div className="opening-row">
-            <span>Montag – Freitag</span>
-            <span>09:00 – 19:00</span>
-          </div>
+            <div className="opening-row">
+              <span>Montag – Freitag</span>
+              <span>09:00 – 19:00</span>
+            </div>
 
-          <div className="opening-row">
-            <span>Samstag</span>
-            <span>09:00 – 17:00</span>
-          </div>
+            <div className="opening-row">
+              <span>Samstag</span>
+              <span>09:00 – 17:00</span>
+            </div>
 
-          <div className="opening-row">
-            <span>Sonntag</span>
-            <span>Geschlossen</span>
+            <div className="opening-row">
+              <span>Sonntag</span>
+              <span>Geschlossen</span>
+            </div>
+
           </div>
 
         </div>
 
-      </div>
-
-    </section>
+      </section>
 
     </main>
   );
