@@ -1,13 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./stylesheet.css";
 
 export default function Home() {
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const parallax = Math.min(scrollY * 0.7, 260);
+  const titleOpacity = Math.min(scrollY / 180, 1);
+  const videoDarkness = Math.min(scrollY / 300, 0.55);
+
+
+  const scrollToOpening = () => {
+  const section = document.getElementById("opening");
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+};
 
   return (
     <main className="page">
+
       <header className="header">
         <div className="header-top">
           <div className="logo">
@@ -28,6 +57,7 @@ export default function Home() {
 
       {/* VIDEO SECTION */}
       <section className="hero-video">
+
         <video
           src="/salon.mp4"
           autoPlay
@@ -36,17 +66,22 @@ export default function Home() {
           playsInline
         />
 
-        {/* Titel über Video */}
+        <div
+          className="video-dark-overlay"
+          style={{ opacity: videoDarkness }}
+        />
+
+
         <div className="hero-title">
           <span className="hero-title-main">BARBERSHOP</span>
           <span className="hero-title-sub">Men’s Hair & Beard</span>
         </div>
 
-        {/* OVERLAY BUTTONS */}
+        {/* ICON BUTTONS */}
         <div className="hero-actions">
 
-         {/* Öffnungszeiten */}
-          <button className="hero-action">
+
+          <button className="hero-action" onClick={scrollToOpening}>
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
                 <circle cx="12" cy="12" r="9" />
@@ -56,7 +91,7 @@ export default function Home() {
             <span>Öffnungszeiten</span>
           </button>
 
-          {/* Unser Team */}
+
           <button className="hero-action">
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
@@ -69,7 +104,7 @@ export default function Home() {
             <span>Unser Team</span>
           </button>
 
-          {/* Kontakt */}
+
           <button className="hero-action">
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
@@ -79,10 +114,47 @@ export default function Home() {
             </div>
             <span>Kontakt</span>
           </button>
-          
+
         </div>
 
       </section>
+
+      {/* OPENING HOURS CARD */}
+
+      <section
+        id="opening"
+        className="opening-card"
+        style={{ transform: `translateY(${-parallax}px)` }}
+      >
+
+       <h2
+          className="opening-title"
+          style={{ opacity: titleOpacity }}
+        >
+          Öffnungszeiten
+      </h2>
+
+        <div className="opening-times" style={{ opacity: titleOpacity }}>
+
+          <div className="opening-row">
+            <span>Montag – Freitag</span>
+            <span>09:00 – 19:00</span>
+          </div>
+
+          <div className="opening-row">
+            <span>Samstag</span>
+            <span>09:00 – 17:00</span>
+          </div>
+
+          <div className="opening-row">
+            <span>Sonntag</span>
+            <span>Geschlossen</span>
+          </div>
+
+        </div>
+
+      </section>
+
     </main>
   );
 }

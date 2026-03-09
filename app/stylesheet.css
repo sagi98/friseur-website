@@ -102,7 +102,9 @@ body {
   width: 100%;
   padding: 0 var(--side-space);
   margin-top: 20px;
+  z-index: 0;
 }
+
 
 /* Video */
 .hero-video video {
@@ -135,7 +137,28 @@ body {
   z-index: 1;
 }
 
-/* Titel über Video */
+
+.video-dark-overlay {
+
+  position: absolute;
+
+  top: 0;
+  left: var(--side-space);
+  right: var(--side-space);
+  bottom: 0;
+
+  border-radius: var(--video-radius);
+
+  background: rgba(0,0,0,0.8);
+
+  pointer-events: none;
+
+  transition: opacity 0.15s linear;
+
+  z-index: 1;
+}
+
+
 
 /* Titel über Video */
 
@@ -147,6 +170,7 @@ body {
   text-align: center;
   z-index: 2;
   color: #f3f3f3;
+  z-index: 3;
 }
 
 /* BARBERSHOP */
@@ -190,6 +214,7 @@ body {
 
   display: flex;
   justify-content: space-between;
+  z-index: 3;
 }
 
 .hero-action {
@@ -220,7 +245,7 @@ body {
   transition: transform 0.15s ease, opacity 0.2s ease;
 }
 
-/* Apple Press Effekt */
+
 .hero-action:active {
   transform: scale(0.92);
   opacity: 0.85;
@@ -252,4 +277,67 @@ body {
   stroke: currentColor;
   fill: none;
   stroke-width: 1.6;
+}
+
+.opening-card {
+
+  position: relative;
+
+  margin-top: 4vh;
+
+  margin-left: var(--side-space);
+  margin-right: var(--side-space);
+
+  padding: 7vh var(--side-space) 10vh;
+
+  border-radius: 28px 28px 0 0;
+
+  background: rgba(0,0,0,0.35);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  color: #f3f3f3;
+
+  z-index: 5;
+
+  transition: transform 0.25s ease-out;
+}
+
+.opening-title {
+
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(1.6rem, 4.8vw, 2rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 2.2vh;
+  transform: translateY(-2vh);
+  transition: opacity 0.25s ease-out;
+}
+
+.opening-times {
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.8vh;
+
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
+
+  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+}
+
+.opening-row {
+
+  display: flex;
+  justify-content: space-between;
+
+  opacity: 0.9;
 }
