@@ -36,7 +36,11 @@ export default function Home() {
           playsInline
         />
 
-        <h1 className="hero-title">HERRENSALON</h1>
+        {/* Titel über Video */}
+        <div className="hero-title">
+          <span className="hero-title-main">BARBERSHOP</span>
+          <span className="hero-title-sub">Men’s Hair & Beard</span>
+        </div>
 
         {/* OVERLAY BUTTONS */}
         <div className="hero-actions">

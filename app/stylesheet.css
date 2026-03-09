@@ -137,24 +137,48 @@ body {
 
 /* Titel über Video */
 
+/* Titel über Video */
+
 .hero-title {
   position: absolute;
-  top: 2%;
+  top: 4%;
   left: 0;
   right: 0;
   text-align: center;
-
+  z-index: 2;
   color: #f3f3f3;
+}
+
+/* BARBERSHOP */
+
+.hero-title-main {
+  display: block;
 
   font-size: clamp(1.8rem, 4vw, 2.2rem);
-  
-   font-family: "Playfair Display", serif;
-   font-weight: 200;
-   letter-spacing: 0.06em;
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
 
-  z-index: 2;
+  letter-spacing: 0.14em;
 
   text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+}
+
+/* Men's Hair & Beard */
+
+.hero-title-sub {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.25em;
+
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+
+  opacity: 0.9;
+
+  text-transform: uppercase;
 }
 
 .hero-actions {
