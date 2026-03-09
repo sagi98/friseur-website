@@ -183,47 +183,72 @@ body {
 
 .hero-actions {
   position: absolute;
-  bottom: 16px;
-  left: var(--side-space);
-  right: var(--side-space);
-  display: flex;
-  gap: 8px;
-}
-
-.hero-actions {
-  position: absolute;
   bottom: 14px;
+
   left: var(--side-space);
   right: var(--side-space);
+
   display: flex;
   justify-content: space-between;
 }
 
 .hero-action {
   flex: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 6px;
+
   padding: 6px 4px;
+
   background: transparent;
   border: none;
+
   color: #f3f3f3;
+
   font-size: 0.65rem;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
+
   letter-spacing: 0.02em;
+
   cursor: pointer;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+
+  transition: transform 0.15s ease, opacity 0.2s ease;
 }
 
-.hero-action:hover {
-  opacity: 1;
+/* Apple Press Effekt */
+.hero-action:active {
+  transform: scale(0.92);
+  opacity: 0.85;
+}
+
+.hero-icon-wrapper {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(0,0,0,0.15);
+
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 .hero-icon {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
+
   stroke: currentColor;
   fill: none;
   stroke-width: 1.6;
