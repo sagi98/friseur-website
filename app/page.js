@@ -15,7 +15,8 @@ export default function Home() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          const scroll = Math.round(window.scrollY);
+          setScrollY(scroll);
           ticking = false;
         });
 
@@ -28,7 +29,7 @@ export default function Home() {
   return () => window.removeEventListener("scroll", handleScroll);
 }, []);
 
-  const parallax = Math.min(scrollY * 0.7, 260);
+  const parallax = Math.round(Math.min(scrollY * 0.7, 260));
   const titleOpacity = Math.min(scrollY / 180, 1);
   const videoDarkness = Math.min(scrollY / 300, 0.55);
 
@@ -134,7 +135,7 @@ export default function Home() {
      <section
       id="opening"
       className="opening-card"
-      style={{ transform: `translateY(${-parallax}px)` }}
+      style={{ transform: `translate3d(0, ${-parallax}px, 0)` }}
     >
 
       <div className="opening-card-inner">
