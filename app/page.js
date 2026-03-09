@@ -131,18 +131,20 @@ export default function Home() {
 
       {/* OPENING HOURS CARD */}
 
-      <section
-        id="opening"
-        className="opening-card"
-        style={{ transform: `translateY(${-parallax}px)` }}
-      >
+     <section
+      id="opening"
+      className="opening-card"
+      style={{ transform: `translateY(${-parallax}px)` }}
+    >
 
-       <h2
+      <div className="opening-card-inner">
+
+        <h2
           className="opening-title"
           style={{ opacity: titleOpacity }}
         >
           Öffnungszeiten
-      </h2>
+        </h2>
 
         <div className="opening-times" style={{ opacity: titleOpacity }}>
 
@@ -163,7 +165,9 @@ export default function Home() {
 
         </div>
 
-      </section>
+      </div>
+
+    </section>
 
     </main>
   );

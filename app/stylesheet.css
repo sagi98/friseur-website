@@ -288,6 +288,15 @@ body {
   margin-left: var(--side-space);
   margin-right: var(--side-space);
 
+  border-radius: 28px 28px 0 0;
+
+  z-index: 5;
+
+  transition: transform 0.25s ease-out;
+}
+
+.opening-card-inner {
+
   padding: 7vh var(--side-space) 10vh;
 
   border-radius: 28px 28px 0 0;
@@ -303,10 +312,6 @@ body {
     inset 0 1px 0 rgba(255,255,255,0.05);
 
   color: #f3f3f3;
-
-  z-index: 5;
-
-  transition: transform 0.25s ease-out;
 }
 
 .opening-title {
