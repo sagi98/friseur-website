@@ -283,11 +283,25 @@ body {
   border-radius: 28px;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.45),
+    0 8px 22px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   color: #f3f3f3;
+}
+
+.team-card .opening-card-inner {
+  min-height: 68vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fcf6f8;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+   box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #1f1f1f;
 }
 
 .team-card .opening-card-inner,
@@ -312,7 +326,12 @@ body {
 }
 
 /* NUR ÖFFNUNGSZEITEN AM ANFANG UNSICHTBAR */
+/* NUR ÖFFNUNGSZEITEN AM ANFANG UNSICHTBAR */
 .opening-card .opening-title {
+  opacity: 0;
+}
+
+.opening-card .opening-status {
   opacity: 0;
 }
 
@@ -348,9 +367,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
   font-size: 0.9rem;
-  opacity: 0.9;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
-
 /* DOT */
 
 .status-dot {

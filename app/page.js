@@ -7,6 +7,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const openingRef = useRef(null);
+  const teamRef = useRef(null);
   const heroActionsRef = useRef(null);
   const heroActionsInitialTopRef = useRef(0);
   const heroActionsHeightRef = useRef(0);
@@ -18,7 +19,9 @@ export default function Home() {
 
     const overlay = document.querySelector(".video-dark-overlay");
     const title = document.querySelector(".opening-card .opening-title");
+    const status = document.querySelector(".opening-card .opening-status");
     const times = document.querySelector(".opening-card .opening-times");
+    const openingInner = document.querySelector(".opening-card .opening-card-inner");
 
     if (heroActionsRef.current) {
       const rect = heroActionsRef.current.getBoundingClientRect();
@@ -33,7 +36,23 @@ export default function Home() {
       if (scroll <= 0) {
         if (overlay) overlay.style.opacity = "0";
 
+        if (openingInner) {
+          openingInner.style.background = `
+            linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 0.35),
+              rgba(0, 0, 0, 0.35) 42%,
+              rgba(0, 0, 0, 0.35) 100%
+            )
+          `;
+        }
+
         if (title) title.style.opacity = "0";
+
+        if (status) {
+          status.style.opacity = "0";
+          status.style.transform = "translateY(10px)";
+        }
 
         if (times) {
           times.style.opacity = "0";
@@ -51,12 +70,40 @@ export default function Home() {
       const darkness = Math.min(scroll / 300, 0.55);
       if (overlay) overlay.style.opacity = String(darkness);
 
-      /* OPENING TEXT */
+      /* OPENING CARD DARKEN ERST WENN TEAM HOCHKOMMT */
+      if (openingCard && teamCard && openingInner) {
+        const openingRect = openingCard.getBoundingClientRect();
+        const teamRect = teamCard.getBoundingClientRect();
+
+        const triggerStart = openingRect.bottom - 180;
+        const progress = (triggerStart - teamRect.top) / 180;
+        const clamped = Math.min(Math.max(progress, 0), 1);
+
+        const topDark = 0.35 + clamped * 0.34;
+        const midDark = 0.35 + clamped * 0.22;
+        const lowDark = 0.35 + clamped * 0.08;
+
+        openingInner.style.background = `
+          linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, ${topDark}),
+            rgba(0, 0, 0, ${midDark}) 42%,
+            rgba(0, 0, 0, ${lowDark}) 100%
+          )
+        `;
+      }
+
+      /* OPENING TEXT / STATUS */
       const titleOpacity = Math.min(scroll / 180, 1);
       const timesOpacity = Math.min(Math.max((scroll - 70) / 180, 0), 1);
 
       if (title) {
         title.style.opacity = String(titleOpacity);
+      }
+
+      if (status) {
+        status.style.opacity = String(titleOpacity);
+        status.style.transform = `translateY(${10 - titleOpacity * 10}px)`;
       }
 
       if (times) {
@@ -65,11 +112,11 @@ export default function Home() {
       }
 
       /* SIMPLE PARALLAX */
-   const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
-   const teamParallax = Math.round(Math.min(scroll * 0.65, 400));
-   const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
+      const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
+      const teamParallax = Math.round(Math.min(scroll * 0.65, 400));
+      const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
 
-          if (openingCard) {
+      if (openingCard) {
         openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
       }
 
@@ -89,31 +136,52 @@ export default function Home() {
   }, []);
 
   const scrollToOpening = () => {
-  const section = openingRef.current;
-  const heroActions = heroActionsRef.current;
+    const section = openingRef.current;
+    const heroActions = heroActionsRef.current;
 
-  if (!section || !heroActions) return;
+    if (!section || !heroActions) return;
 
-  const sectionTop = section.offsetTop;
-  const heroActionsTop = heroActions.offsetTop;
-  const heroActionsHeight = heroActions.offsetHeight;
+    const sectionTop = section.offsetTop;
+    const heroActionsTop = heroActions.offsetTop;
+    const heroActionsHeight = heroActions.offsetHeight;
 
- 
-  const overlap = heroActionsHeight * 3.1;
+    const overlap = heroActionsHeight * 3.1;
 
- 
-  let target = (sectionTop - heroActionsTop + overlap) / 0.7;
+    let target = (sectionTop - heroActionsTop + overlap) / 0.7;
 
-  
-  if (target * 0.7 > 260) {
-    target = sectionTop - heroActionsTop + overlap - 260;
-  }
+    if (target * 0.7 > 260) {
+      target = sectionTop - heroActionsTop + overlap - 260;
+    }
 
-  window.scrollTo({
-    top: Math.max(0, target),
-    behavior: "smooth",
-  });
-};
+    window.scrollTo({
+      top: Math.max(0, target),
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToTeam = () => {
+    const section = teamRef.current;
+    const heroActions = heroActionsRef.current;
+
+    if (!section || !heroActions) return;
+
+    const sectionTop = section.offsetTop;
+    const heroActionsTop = heroActions.offsetTop;
+    const heroActionsHeight = heroActions.offsetHeight;
+
+    const overlap = heroActionsHeight * 6.6;
+
+    let target = (sectionTop - heroActionsTop + overlap) / 0.65;
+
+    if (target * 0.65 > 400) {
+      target = sectionTop - heroActionsTop + overlap - 400;
+    }
+
+    window.scrollTo({
+      top: Math.max(0, target),
+      behavior: "smooth",
+    });
+  };
 
   const getOpenStatus = () => {
     const now = new Date();
@@ -183,7 +251,7 @@ export default function Home() {
             <span>Öffnungszeiten</span>
           </button>
 
-          <button className="hero-action">
+          <button className="hero-action" onClick={scrollToTeam}>
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
                 <circle cx="9" cy="8" r="3" />
@@ -237,7 +305,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="team-card">
+      <section className="team-card" ref={teamRef}>
         <div className="opening-card-inner">
           <h2 className="opening-title">Unser Team</h2>
         </div>
