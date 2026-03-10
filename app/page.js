@@ -19,32 +19,55 @@ export default function Home() {
   const teamMembers = [
     {
       id: 1,
-      name: "Arshad",
+      name: "Arshad Al-Khidr",
       image: "/Arshad.png",
+      role: "Senior Stylist",
+      skills: [
+        "Colorationen",
+        "Damen & Herren Haarschnitte",
+        "Augenbrauen & Styling",
+      ],
+      quote: "Präzision, Stil und Persönlichkeit.",
       empty: false,
     },
     {
       id: 2,
-      name: "Rewano",
+      name: "Rewano Al-Khidr",
       image: "/Rewano.png",
+      role: "Senior Stylist",
+      skills: [
+        "Colorationen",
+        "Damen & Herren Haarschnitte",
+        "Augenbrauen & Styling",
+      ],
+      quote: "Präzision, Stil und Persönlichkeit.",
       empty: false,
     },
     {
       id: 3,
       name: "",
       image: "",
+      role: "",
+      skills: [],
+      quote: "",
       empty: true,
     },
     {
       id: 4,
       name: "",
       image: "",
+      role: "",
+      skills: [],
+      quote: "",
       empty: true,
     },
     {
       id: 5,
       name: "",
       image: "",
+      role: "",
+      skills: [],
+      quote: "",
       empty: true,
     },
   ];
@@ -395,6 +418,20 @@ export default function Home() {
 
                       <div className="team-name-block">
                         <h3 className="team-name">{member.name}</h3>
+
+                        <div className="team-role">{member.role}</div>
+
+                        <div className="team-divider"></div>
+
+                        <ul className="team-skills">
+                          {member.skills.map((skill, index) => (
+                            <li key={index}>{skill}</li>
+                          ))}
+                        </ul>
+
+                        <div className="team-divider"></div>
+
+                        <div className="team-quote">„{member.quote}“</div>
                       </div>
                     </div>
                   ) : (

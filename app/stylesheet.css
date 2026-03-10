@@ -9,8 +9,8 @@
   --hero-actions-bottom: clamp(18px, 5vw, 28px);
   --hero-icon-size: clamp(38px, 10vw, 42px);
   --hero-svg-size: clamp(26px, 7vw, 28px);
-  --team-card-overlap: clamp(-78px, -9vw, -36px);
-  --team-inner-min-h: clamp(500px, 68svh, 720px);
+  --team-card-overlap: clamp(-120px, -14vw, -80px);
+  --team-inner-min-h: clamp(540px, 72svh, 760px);
   --team-profile-min-h: clamp(360px, 50svh, 560px);
 }
 
@@ -473,6 +473,7 @@ body {
   overflow: hidden;
   width: 100%;
   border-radius: clamp(20px, 5vw, 24px);
+  
 }
 
 .team-slider-track {
@@ -507,14 +508,15 @@ body {
 
 .team-profile-card-empty {
   justify-content: center;
+   height: 100%;
 }
 
 .team-photo-wrap {
-  width: 100%;
-  border-radius: clamp(16px, 4vw, 20px);
+  width: clamp(260px, 70vw, 340px);
+  height: clamp(260px, 70vw, 340px);
+  border-radius: 50%;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
-  background: #ece7e9;
+  margin-top: clamp(-70px, -10svh, -50px);
 }
 
 .team-photo {
@@ -533,10 +535,51 @@ body {
 
 .team-name {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.7rem, 5vw, 2.2rem);
-  font-weight: 600;
-  color: #1f1f1f;
-  letter-spacing: 0.02em;
+  font-size: clamp(1.6rem, 4.5vw, 2rem);
+  margin-top: clamp(4px, 0.8svh, 8px);
+}
+
+.team-role {
+  margin-top: clamp(2px, 0.6svh, 6px);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.05rem, 3.6vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  color: rgba(31, 31, 31, 0.78);
+}
+
+.team-skills {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.team-skills li {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.2rem, 4.1vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0.01em;
+  color: #2a2a2a;
+}
+
+.team-skills li + li {
+  margin-top: clamp(8px, 1.6svh, 14px);
+}
+
+.team-quote {
+  width: 100%;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.1rem, 3.7vw, 1.45rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0.01em;
+  color: rgba(31, 31, 31, 0.6);
 }
 
 .team-empty-text {
