@@ -1,6 +1,17 @@
 :root {
-  --side-space: 16px;
-  --video-radius: 18px;
+  --side-space: clamp(14px, 4vw, 18px);
+  --video-radius: clamp(16px, 4vw, 20px);
+  --card-radius: clamp(24px, 6vw, 28px);
+  --header-logo-width: clamp(96px, 26vw, 110px);
+  --menu-width: clamp(32px, 8vw, 34px);
+  --menu-height: clamp(22px, 6vw, 24px);
+  --hero-overlay-height: clamp(78px, 20vw, 90px);
+  --hero-actions-bottom: clamp(18px, 5vw, 28px);
+  --hero-icon-size: clamp(38px, 10vw, 42px);
+  --hero-svg-size: clamp(26px, 7vw, 28px);
+  --team-card-overlap: clamp(-78px, -9vw, -36px);
+  --team-inner-min-h: clamp(500px, 68svh, 720px);
+  --team-profile-min-h: clamp(360px, 50svh, 560px);
 }
 
 * {
@@ -11,6 +22,7 @@
 
 html {
   font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 html,
@@ -19,6 +31,10 @@ body {
   padding: 0;
   background: #f3f3f3;
   font-family: Arial, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .page {
@@ -32,7 +48,7 @@ body {
 
 .header {
   width: 100%;
-  padding: 10px var(--side-space) 0;
+  padding: clamp(8px, 2.4vw, 10px) var(--side-space) 0;
   background: #f3f3f3;
 }
 
@@ -40,15 +56,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
-  padding-top: 6px;
+  margin-bottom: clamp(4px, 1.5vw, 6px);
+  padding-top: clamp(4px, 1.5vw, 6px);
 }
 
 .logo {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 110px;
+  width: var(--header-logo-width);
 }
 
 .logo img {
@@ -60,8 +76,8 @@ body {
 
 .menu-button {
   position: relative;
-  width: 34px;
-  height: 24px;
+  width: var(--menu-width);
+  height: var(--menu-height);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -71,7 +87,7 @@ body {
 .menu-button span {
   position: absolute;
   left: 0;
-  width: 34px;
+  width: 100%;
   height: 2px;
   background: #000;
   transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
@@ -82,15 +98,15 @@ body {
 }
 
 .menu-button span:nth-child(2) {
-  top: 11px;
+  top: calc(50% - 1px);
 }
 
 .menu-button span:nth-child(3) {
-  top: 22px;
+  bottom: 0;
 }
 
 .menu-button.open span:nth-child(1) {
-  top: 11px;
+  top: calc(50% - 1px);
   transform: rotate(45deg);
 }
 
@@ -99,7 +115,8 @@ body {
 }
 
 .menu-button.open span:nth-child(3) {
-  top: 11px;
+  bottom: auto;
+  top: calc(50% - 1px);
   transform: rotate(-45deg);
 }
 
@@ -109,7 +126,7 @@ body {
   position: relative;
   width: 100%;
   padding: 0 var(--side-space);
-  margin-top: 20px;
+  margin-top: clamp(16px, 5vw, 20px);
 }
 
 .hero-video video {
@@ -126,7 +143,7 @@ body {
   left: var(--side-space);
   right: var(--side-space);
   top: 0;
-  height: 90px;
+  height: var(--hero-overlay-height);
   border-top-left-radius: var(--video-radius);
   border-top-right-radius: var(--video-radius);
   background: linear-gradient(
@@ -176,8 +193,8 @@ body {
 
 .hero-title-sub {
   display: block;
-  margin-top: 4px;
-  font-size: 0.7rem;
+  margin-top: clamp(3px, 1vw, 4px);
+  font-size: clamp(0.64rem, 1.8vw, 0.7rem);
   letter-spacing: 0.25em;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
@@ -189,7 +206,7 @@ body {
 
 .hero-actions {
   position: absolute;
-  bottom: 28px;
+  bottom: var(--hero-actions-bottom);
   left: var(--side-space);
   right: var(--side-space);
   display: flex;
@@ -202,12 +219,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 6px 4px;
+  gap: clamp(5px, 1.5vw, 6px);
+  padding: clamp(4px, 1.5vw, 6px) 4px;
   background: transparent;
   border: none;
   color: #f3f3f3;
-  font-size: 0.65rem;
+  font-size: clamp(0.62rem, 1.8vw, 0.65rem);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
   letter-spacing: 0.02em;
@@ -221,8 +238,8 @@ body {
 }
 
 .hero-icon-wrapper {
-  width: 40px;
-  height: 40px;
+  width: var(--hero-icon-size);
+  height: var(--hero-icon-size);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,8 +252,8 @@ body {
 }
 
 .hero-icon {
-  width: 28px;
-  height: 28px;
+  width: var(--hero-svg-size);
+  height: var(--hero-svg-size);
   stroke: currentColor;
   fill: none;
   stroke-width: 1.6;
@@ -251,8 +268,8 @@ body {
   position: relative;
   margin-left: var(--side-space);
   margin-right: var(--side-space);
-  margin-top: 6vh;
-  border-radius: 28px;
+  margin-top: clamp(24px, 6vh, 48px);
+  border-radius: var(--card-radius);
   transition: transform 0.25s ease-out;
 }
 
@@ -266,8 +283,8 @@ body {
   position: relative;
   margin-left: var(--side-space);
   margin-right: var(--side-space);
-  margin-top: clamp(-70px, -8vh, -18px);
-  border-radius: 28px;
+  margin-top: var(--team-card-overlap);
+  border-radius: var(--card-radius);
   z-index: 6;
   transition: transform 0.25s ease-out;
 }
@@ -279,8 +296,8 @@ body {
 /* CARD INNER */
 
 .opening-card-inner {
-  padding: 7vh var(--side-space) 10vh;
-  border-radius: 28px;
+  padding: clamp(32px, 7svh, 54px) var(--side-space) clamp(44px, 10svh, 78px);
+  border-radius: var(--card-radius);
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -291,14 +308,14 @@ body {
 }
 
 .team-card .opening-card-inner {
-  min-height: 68vh;
+  min-height: var(--team-inner-min-h);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fcf6f8;
+  background: #f5f5f5;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
-   box-shadow:
+  box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   color: #1f1f1f;
@@ -306,7 +323,7 @@ body {
 
 .team-card .opening-card-inner,
 .contact-card .opening-card-inner {
-  min-height: 68vh;
+  min-height: var(--team-inner-min-h);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,16 +334,18 @@ body {
 .opening-title {
   text-align: center;
   font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(1.6rem, 4.8vw, 2rem);
   letter-spacing: 0.04em;
-  margin-bottom: 2.2vh;
+  line-height: 1.05;
+  margin-bottom: clamp(12px, 2.2vh, 22px);
   transform: translateY(-2vh);
   transition: opacity 0.25s ease-out;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
-/* NUR ÖFFNUNGSZEITEN AM ANFANG UNSICHTBAR */
-/* NUR ÖFFNUNGSZEITEN AM ANFANG UNSICHTBAR */
 .opening-card .opening-title {
   opacity: 0;
 }
@@ -340,7 +359,7 @@ body {
 .opening-times {
   display: flex;
   flex-direction: column;
-  gap: 1.8vh;
+  gap: clamp(12px, 1.8vh, 18px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
   font-size: clamp(0.95rem, 2.6vw, 1.05rem);
@@ -361,15 +380,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-top: -35px;
-  margin-bottom: 20px;
+  gap: clamp(6px, 2vw, 8px);
+  margin-top: clamp(-32px, -4vh, -20px);
+  margin-bottom: clamp(16px, 3vw, 20px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.84rem, 2.2vw, 0.9rem);
   transform: translateY(10px);
   transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
+
 /* DOT */
 
 .status-dot {
@@ -377,6 +397,7 @@ body {
   height: 8px;
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .status-dot.open {
@@ -416,4 +437,173 @@ body {
 .status-text {
   letter-spacing: 0.01em;
   font-weight: 500;
+}
+
+/* TEAM SLIDER */
+
+.team-card-inner {
+  flex-direction: column;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  padding-top: clamp(20px, 3.2svh, 28px);
+  padding-bottom: clamp(38px, 7.8svh, 64px);
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.team-title {
+  color: #1f1f1f;
+  opacity: 1 !important;
+  transform: translateY(-6px) !important;
+  margin-bottom: clamp(12px, 2vw, 14px);
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(1.6rem, 4.8vw, 2rem);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.team-slider-window {
+  overflow: hidden;
+  width: 100%;
+  border-radius: clamp(20px, 5vw, 24px);
+}
+
+.team-slider-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.team-slide {
+  min-width: 100%;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.team-profile-card {
+  min-height: var(--team-profile-min-h);
+  border-radius: clamp(20px, 5vw, 24px);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  padding: clamp(16px, 4vw, 18px) clamp(16px, 4vw, 18px) clamp(18px, 5vw, 22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(14px, 3vw, 18px);
+}
+
+.team-profile-card-empty {
+  justify-content: center;
+}
+
+.team-photo-wrap {
+  width: 100%;
+  border-radius: clamp(16px, 4vw, 20px);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #ece7e9;
+}
+
+.team-photo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.team-name-block {
+  text-align: center;
+}
+
+.team-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.7rem, 5vw, 2.2rem);
+  font-weight: 600;
+  color: #1f1f1f;
+  letter-spacing: 0.02em;
+}
+
+.team-empty-text {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: clamp(0.88rem, 2.4vw, 0.95rem);
+  color: rgba(31, 31, 31, 0.55);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.team-controls {
+  margin-top: clamp(14px, 3vw, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(10px, 3vw, 14px);
+}
+
+.team-arrow {
+  width: clamp(34px, 9vw, 36px);
+  height: clamp(34px, 9vw, 36px);
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  color: #1f1f1f;
+  font-size: clamp(1.35rem, 5vw, 1.5rem);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.team-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.team-dots {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.team-dot-nav {
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(31, 31, 31, 0.18);
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+
+.team-dot-nav.active {
+  background: rgba(31, 31, 31, 0.72);
+  transform: scale(1.15);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .team-arrow:hover {
+    transform: translateY(-1px);
+  }
 }

@@ -5,12 +5,49 @@ import "./stylesheet.css";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [teamIndex, setTeamIndex] = useState(0);
 
   const openingRef = useRef(null);
   const teamRef = useRef(null);
   const heroActionsRef = useRef(null);
   const heroActionsInitialTopRef = useRef(0);
   const heroActionsHeightRef = useRef(0);
+
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+
+  const teamMembers = [
+    {
+      id: 1,
+      name: "Arshad",
+      image: "/Arshad.png",
+      empty: false,
+    },
+    {
+      id: 2,
+      name: "Rewano",
+      image: "/Rewano.png",
+      empty: false,
+    },
+    {
+      id: 3,
+      name: "",
+      image: "",
+      empty: true,
+    },
+    {
+      id: 4,
+      name: "",
+      image: "",
+      empty: true,
+    },
+    {
+      id: 5,
+      name: "",
+      image: "",
+      empty: true,
+    },
+  ];
 
   useEffect(() => {
     const openingCard = document.querySelector(".opening-card");
@@ -32,7 +69,6 @@ export default function Home() {
     const handleScroll = () => {
       const scroll = Math.round(window.scrollY);
 
-      /* GANZ OBEN: Startzustand beibehalten */
       if (scroll <= 0) {
         if (overlay) overlay.style.opacity = "0";
 
@@ -66,11 +102,9 @@ export default function Home() {
         return;
       }
 
-      /* VIDEO DARKEN */
       const darkness = Math.min(scroll / 300, 0.55);
       if (overlay) overlay.style.opacity = String(darkness);
 
-      /* OPENING CARD DARKEN ERST WENN TEAM HOCHKOMMT */
       if (openingCard && teamCard && openingInner) {
         const openingRect = openingCard.getBoundingClientRect();
         const teamRect = teamCard.getBoundingClientRect();
@@ -93,7 +127,6 @@ export default function Home() {
         `;
       }
 
-      /* OPENING TEXT / STATUS */
       const titleOpacity = Math.min(scroll / 180, 1);
       const timesOpacity = Math.min(Math.max((scroll - 70) / 180, 0), 1);
 
@@ -111,7 +144,6 @@ export default function Home() {
         times.style.transform = `translateY(${10 - timesOpacity * 10}px)`;
       }
 
-      /* SIMPLE PARALLAX */
       const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
       const teamParallax = Math.round(Math.min(scroll * 0.65, 400));
       const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
@@ -181,6 +213,36 @@ export default function Home() {
       top: Math.max(0, target),
       behavior: "smooth",
     });
+  };
+
+  const nextTeam = () => {
+    setTeamIndex((prev) => Math.min(prev + 1, teamMembers.length - 1));
+  };
+
+  const prevTeam = () => {
+    setTeamIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const onTeamTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStartXRef.current = touch.clientX;
+    touchStartYRef.current = touch.clientY;
+  };
+
+  const onTeamTouchEnd = (e) => {
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartXRef.current;
+    const deltaY = touch.clientY - touchStartYRef.current;
+
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    if (deltaX < 0) {
+      nextTeam();
+    } else {
+      prevTeam();
+    }
   };
 
   const getOpenStatus = () => {
@@ -306,8 +368,75 @@ export default function Home() {
       </section>
 
       <section className="team-card" ref={teamRef}>
-        <div className="opening-card-inner">
-          <h2 className="opening-title">Unser Team</h2>
+        <div
+          className="opening-card-inner team-card-inner"
+          onTouchStart={onTeamTouchStart}
+          onTouchEnd={onTeamTouchEnd}
+        >
+          <h2 className="opening-title team-title">Unser Team</h2>
+
+          <div className="team-slider-window">
+            <div
+              className="team-slider-track"
+              style={{ transform: `translate3d(-${teamIndex * 100}%, 0, 0)` }}
+            >
+              {teamMembers.map((member) => (
+                <div className="team-slide" key={member.id}>
+                  {!member.empty ? (
+                    <div className="team-profile-card">
+                      <div className="team-photo-wrap">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="team-photo"
+                          draggable="false"
+                        />
+                      </div>
+
+                      <div className="team-name-block">
+                        <h3 className="team-name">{member.name}</h3>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="team-profile-card team-profile-card-empty">
+                      <div className="team-empty-text">Coming Soon</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="team-controls">
+            <button
+              className="team-arrow"
+              onClick={prevTeam}
+              aria-label="Vorheriger Mitarbeiter"
+              disabled={teamIndex === 0}
+            >
+              ‹
+            </button>
+
+            <div className="team-dots">
+              {teamMembers.map((member, index) => (
+                <button
+                  key={member.id}
+                  className={`team-dot-nav ${index === teamIndex ? "active" : ""}`}
+                  onClick={() => setTeamIndex(index)}
+                  aria-label={`Mitarbeiter ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              className="team-arrow"
+              onClick={nextTeam}
+              aria-label="Nächster Mitarbeiter"
+              disabled={teamIndex === teamMembers.length - 1}
+            >
+              ›
+            </button>
+          </div>
         </div>
       </section>
 
