@@ -8,6 +8,8 @@ export default function Home() {
 
   const openingRef = useRef(null);
   const heroActionsRef = useRef(null);
+  const heroActionsInitialTopRef = useRef(0);
+  const heroActionsHeightRef = useRef(0);
 
   useEffect(() => {
     const openingCard = document.querySelector(".opening-card");
@@ -17,6 +19,12 @@ export default function Home() {
     const overlay = document.querySelector(".video-dark-overlay");
     const title = document.querySelector(".opening-card .opening-title");
     const times = document.querySelector(".opening-card .opening-times");
+
+    if (heroActionsRef.current) {
+      const rect = heroActionsRef.current.getBoundingClientRect();
+      heroActionsInitialTopRef.current = rect.top;
+      heroActionsHeightRef.current = rect.height;
+    }
 
     const handleScroll = () => {
       const scroll = Math.round(window.scrollY);
@@ -87,16 +95,18 @@ export default function Home() {
   if (!section || !heroActions) return;
 
   const sectionTop = section.offsetTop;
-  const heroActionsRect = heroActions.getBoundingClientRect();
+  const heroActionsTop = heroActions.offsetTop;
+  const heroActionsHeight = heroActions.offsetHeight;
 
  
-  const overlap = heroActionsRect.height * 2.9;
-  const desiredTop = heroActionsRect.top - overlap;
+  const overlap = heroActionsHeight * 3;
 
-  let target = (sectionTop - desiredTop) / 1.7;
+ 
+  let target = (sectionTop - heroActionsTop + overlap) / 0.7;
 
+  
   if (target * 0.7 > 260) {
-    target = sectionTop - desiredTop - 260;
+    target = sectionTop - heroActionsTop + overlap - 260;
   }
 
   window.scrollTo({
