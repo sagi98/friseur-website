@@ -65,9 +65,9 @@ export default function Home() {
       }
 
       /* SIMPLE PARALLAX */
-     const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
-     const teamParallax = Math.round(Math.min(scroll * 0.62, 260));
-     const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
+   const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
+   const teamParallax = Math.round(Math.min(scroll * 0.65, 400));
+   const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
 
           if (openingCard) {
         openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
