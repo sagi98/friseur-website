@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./stylesheet.css";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const openingRef = useRef(null);
+  const heroActionsRef = useRef(null);
 
   useEffect(() => {
     const openingCard = document.querySelector(".opening-card");
@@ -53,7 +56,7 @@ export default function Home() {
         times.style.transform = `translateY(${10 - timesOpacity * 10}px)`;
       }
 
-      /* SIMPLE PARALLAX WIE IM BACKUP */
+      /* SIMPLE PARALLAX */
       const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
       const teamParallax = Math.round(Math.min(scroll * 0.42, 180));
       const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
@@ -78,20 +81,29 @@ export default function Home() {
   }, []);
 
   const scrollToOpening = () => {
-    const section = document.getElementById("opening");
-    if (!section) return;
+  const section = openingRef.current;
+  const heroActions = heroActionsRef.current;
 
-    const rect = section.getBoundingClientRect();
-    const scrollTop = window.scrollY;
-    const vh = window.innerHeight;
+  if (!section || !heroActions) return;
 
-    const target = rect.top + scrollTop - vh * 0.45;
+  const sectionTop = section.offsetTop;
+  const heroActionsRect = heroActions.getBoundingClientRect();
 
-    window.scrollTo({
-      top: target,
-      behavior: "smooth",
-    });
-  };
+ 
+  const overlap = heroActionsRect.height * 2.9;
+  const desiredTop = heroActionsRect.top - overlap;
+
+  let target = (sectionTop - desiredTop) / 1.7;
+
+  if (target * 0.7 > 260) {
+    target = sectionTop - desiredTop - 260;
+  }
+
+  window.scrollTo({
+    top: Math.max(0, target),
+    behavior: "smooth",
+  });
+};
 
   const getOpenStatus = () => {
     const now = new Date();
@@ -146,11 +158,11 @@ export default function Home() {
         <div className="video-dark-overlay" />
 
         <div className="hero-title">
-          <span className="hero-title-main">BARBERSHOP</span>
-          <span className="hero-title-sub">Men’s Hair & Beard</span>
+          <span className="hero-title-main">FRISEURSALON</span>
+          <span className="hero-title-sub">Hair • Color • Style</span>
         </div>
 
-        <div className="hero-actions">
+        <div className="hero-actions" ref={heroActionsRef}>
           <button className="hero-action" onClick={scrollToOpening}>
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
@@ -185,7 +197,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="opening" className="opening-card">
+      <section id="opening" className="opening-card" ref={openingRef}>
         <div className="opening-card-inner">
           <h2 className="opening-title">Öffnungszeiten</h2>
 
