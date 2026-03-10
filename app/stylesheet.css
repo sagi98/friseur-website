@@ -530,23 +530,39 @@ body {
 }
 
 .team-name-block {
+  width: 100%;
   text-align: center;
+  margin-top: clamp(-58px, -7svh, -36px);
 }
+
 
 .team-name {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.6rem, 4.5vw, 2rem);
-  margin-top: clamp(4px, 0.8svh, 8px);
+  font-size: clamp(1.85rem, 5vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: 0.015em;
+  color: #222;
+  margin: 0;
 }
+
 
 .team-role {
   margin-top: clamp(2px, 0.6svh, 6px);
+  margin-bottom: clamp(18px, 3svh, 26px);
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.05rem, 3.6vw, 1.35rem);
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: 0.03em;
   color: rgba(31, 31, 31, 0.78);
+}
+
+.team-divider {
+  width: min(72%, 250px);
+  height: 1px;
+  margin: clamp(8px, 1.6svh, 12px) auto;
+  background: rgba(31, 31, 31, 0.08);
 }
 
 .team-skills {
@@ -559,27 +575,30 @@ body {
 
 .team-skills li {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.2rem, 4.1vw, 1.7rem);
+  font-size: clamp(1.02rem, 3.2vw, 1.28rem);
   font-weight: 400;
-  line-height: 1.28;
-  letter-spacing: 0.01em;
+  line-height: 1.08;
+  letter-spacing: 0.035em;
   color: #2a2a2a;
 }
 
 .team-skills li + li {
-  margin-top: clamp(8px, 1.6svh, 14px);
+  margin-top: clamp(5px, 0.9svh, 8px);
 }
+
 
 .team-quote {
   width: 100%;
   text-align: center;
+  margin-top: clamp(26px, 4.5svh, 40px);
+  margin-bottom: clamp(42px, 8svh, 72px);
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.1rem, 3.7vw, 1.45rem);
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.28;
-  letter-spacing: 0.01em;
-  color: rgba(31, 31, 31, 0.6);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: rgba(31, 31, 31, 0.42);
 }
 
 .team-empty-text {
