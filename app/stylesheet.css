@@ -189,7 +189,7 @@ body {
 
 .hero-actions {
   position: absolute;
-  bottom: 14px;
+  bottom: 28px;
   left: var(--side-space);
   right: var(--side-space);
   display: flex;
@@ -245,7 +245,6 @@ body {
 /* CARDS */
 
 .opening-card,
-.team-card,
 .contact-card {
   will-change: transform;
   transform: translateZ(0);
@@ -254,8 +253,27 @@ body {
   margin-right: var(--side-space);
   margin-top: 6vh;
   border-radius: 28px;
-  z-index: 5;
   transition: transform 0.25s ease-out;
+}
+
+.opening-card {
+  z-index: 4;
+}
+
+.team-card {
+  will-change: transform;
+  transform: translateZ(0);
+  position: relative;
+  margin-left: var(--side-space);
+  margin-right: var(--side-space);
+  margin-top: clamp(-70px, -8vh, -18px);
+  border-radius: 28px;
+  z-index: 6;
+  transition: transform 0.25s ease-out;
+}
+
+.contact-card {
+  z-index: 3;
 }
 
 /* CARD INNER */

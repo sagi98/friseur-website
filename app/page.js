@@ -65,11 +65,11 @@ export default function Home() {
       }
 
       /* SIMPLE PARALLAX */
-      const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
-      const teamParallax = Math.round(Math.min(scroll * 0.42, 180));
-      const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
+     const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
+     const teamParallax = Math.round(Math.min(scroll * 0.62, 260));
+     const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
 
-      if (openingCard) {
+          if (openingCard) {
         openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
       }
 
@@ -99,7 +99,7 @@ export default function Home() {
   const heroActionsHeight = heroActions.offsetHeight;
 
  
-  const overlap = heroActionsHeight * 3;
+  const overlap = heroActionsHeight * 3.1;
 
  
   let target = (sectionTop - heroActionsTop + overlap) / 0.7;
