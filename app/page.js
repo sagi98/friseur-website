@@ -4,62 +4,124 @@ import { useState, useEffect } from "react";
 import "./stylesheet.css";
 
 export default function Home() {
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    const openingCard = document.querySelector(".opening-card");
+    const teamCard = document.querySelector(".team-card");
+    const contactCard = document.querySelector(".contact-card");
 
-    const card = document.querySelector(".opening-card");
     const overlay = document.querySelector(".video-dark-overlay");
-    const title = document.querySelector(".opening-title");
-    const times = document.querySelector(".opening-times");
+    const title = document.querySelector(".opening-card .opening-title");
+    const times = document.querySelector(".opening-card .opening-times");
 
     const handleScroll = () => {
-
       const scroll = Math.round(window.scrollY);
 
-      const parallax = Math.round(Math.min(scroll * 0.7, 260));
-      const opacity = Math.min(scroll / 180, 1);
+      /* GANZ OBEN: Startzustand beibehalten */
+      if (scroll <= 0) {
+        if (overlay) overlay.style.opacity = "0";
+
+        if (title) title.style.opacity = "0";
+
+        if (times) {
+          times.style.opacity = "0";
+          times.style.transform = "translateY(10px)";
+        }
+
+        if (openingCard) openingCard.style.transform = "translateZ(0)";
+        if (teamCard) teamCard.style.transform = "translateZ(0)";
+        if (contactCard) contactCard.style.transform = "translateZ(0)";
+
+        return;
+      }
+
+      /* VIDEO DARKEN */
       const darkness = Math.min(scroll / 300, 0.55);
+      if (overlay) overlay.style.opacity = String(darkness);
 
-      if (card) {
-        card.style.transform = `translate3d(0, ${-parallax}px, 0)`;
-      }
-
-      if (overlay) {
-        overlay.style.opacity = darkness;
-      }
+      /* OPENING TEXT */
+      const titleOpacity = Math.min(scroll / 180, 1);
+      const timesOpacity = Math.min(Math.max((scroll - 70) / 180, 0), 1);
 
       if (title) {
-        title.style.opacity = opacity;
+        title.style.opacity = String(titleOpacity);
       }
 
       if (times) {
-        times.style.opacity = opacity;
+        times.style.opacity = String(timesOpacity);
+        times.style.transform = `translateY(${10 - timesOpacity * 10}px)`;
       }
 
+      /* SIMPLE PARALLAX WIE IM BACKUP */
+      const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
+      const teamParallax = Math.round(Math.min(scroll * 0.42, 180));
+      const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
+
+      if (openingCard) {
+        openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
+      }
+
+      if (teamCard) {
+        teamCard.style.transform = `translate3d(0, ${-teamParallax}px, 0)`;
+      }
+
+      if (contactCard) {
+        contactCard.style.transform = `translate3d(0, ${-contactParallax}px, 0)`;
+      }
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-
   }, []);
 
   const scrollToOpening = () => {
     const section = document.getElementById("opening");
+    if (!section) return;
 
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
+    const rect = section.getBoundingClientRect();
+    const scrollTop = window.scrollY;
+    const vh = window.innerHeight;
+
+    const target = rect.top + scrollTop - vh * 0.45;
+
+    window.scrollTo({
+      top: target,
+      behavior: "smooth",
+    });
   };
+
+  const getOpenStatus = () => {
+    const now = new Date();
+    const day = now.getDay();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
+
+    const time = hour * 60 + minutes;
+
+    const weekdayOpen = 9 * 60;
+    const weekdayClose = 19 * 60;
+
+    const saturdayOpen = 9 * 60;
+    const saturdayClose = 17 * 60;
+
+    if (day >= 1 && day <= 5) {
+      return time >= weekdayOpen && time < weekdayClose;
+    }
+
+    if (day === 6) {
+      return time >= saturdayOpen && time < saturdayClose;
+    }
+
+    return false;
+  };
+
+  const isOpen = getOpenStatus();
 
   return (
     <main className="page">
-
       <header className="header">
         <div className="header-top">
           <div className="logo">
@@ -78,16 +140,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* VIDEO SECTION */}
       <section className="hero-video">
-
-        <video
-          src="/salon.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        <video src="/salon.mp4" autoPlay muted loop playsInline />
 
         <div className="video-dark-overlay" />
 
@@ -97,7 +151,6 @@ export default function Home() {
         </div>
 
         <div className="hero-actions">
-
           <button className="hero-action" onClick={scrollToOpening}>
             <div className="hero-icon-wrapper">
               <svg viewBox="0 0 24 24" className="hero-icon">
@@ -129,24 +182,21 @@ export default function Home() {
             </div>
             <span>Kontakt</span>
           </button>
-
         </div>
-
       </section>
 
-
-      {/* OPENING HOURS CARD */}
-
       <section id="opening" className="opening-card">
-
         <div className="opening-card-inner">
+          <h2 className="opening-title">Öffnungszeiten</h2>
 
-          <h2 className="opening-title">
-            Öffnungszeiten
-          </h2>
+          <div className="opening-status">
+            <span className={`status-dot ${isOpen ? "open" : "closed"}`}></span>
+            <span className="status-text">
+              {isOpen ? "Jetzt geöffnet" : "Jetzt geschlossen"}
+            </span>
+          </div>
 
           <div className="opening-times">
-
             <div className="opening-row">
               <span>Montag – Freitag</span>
               <span>09:00 – 19:00</span>
@@ -161,13 +211,21 @@ export default function Home() {
               <span>Sonntag</span>
               <span>Geschlossen</span>
             </div>
-
           </div>
-
         </div>
-
       </section>
 
+      <section className="team-card">
+        <div className="opening-card-inner">
+          <h2 className="opening-title">Unser Team</h2>
+        </div>
+      </section>
+
+      <section className="contact-card">
+        <div className="opening-card-inner">
+          <h2 className="opening-title">Kontakt</h2>
+        </div>
+      </section>
     </main>
   );
 }
