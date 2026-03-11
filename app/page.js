@@ -31,7 +31,7 @@ export default function Home() {
       id: 1,
       name: "Arshad Al-Khidr",
       image: "/Arshad.png",
-      role: "Salonleitung",
+      role: "Gründer & Salonleitung",
       skills: ["Hair & Beard Specialist", "Color & Hairstyling", "ㅤ"],
       quote: "Ein guter Schnitt macht den Unterschied.",
       empty: false,
@@ -40,7 +40,7 @@ export default function Home() {
       id: 2,
       name: "Rewano Al-Khidr",
       image: "/Rewano.png",
-      role: "Salonleitung",
+      role: "Gründer & Salonleitung",
       skills: [
         "Friseurmeister",
         "Bachelor of Professional Hairstyling",
@@ -58,6 +58,7 @@ export default function Home() {
     const openingCard = document.querySelector(".opening-card");
     const teamCard = document.querySelector(".team-card");
     const contactCard = document.querySelector(".contact-card");
+    const teamControls = document.querySelector(".team-controls");
 
     const overlay = document.querySelector(".video-dark-overlay");
     const title = document.querySelector(".opening-card .opening-title");
@@ -78,7 +79,7 @@ export default function Home() {
       return Math.round(Math.min((scroll - delayStart) * speed, max));
     };
 
-    const solveLinearTarget = (sectionTop, speed, max) => {
+    const solveLinearTargetLocal = (sectionTop, speed, max) => {
       const saturationPoint = max / speed;
       const candidate = sectionTop / (1 + speed);
 
@@ -96,6 +97,7 @@ export default function Home() {
       const openingHeight = openingCard.offsetHeight;
       const teamHeight = teamCard.offsetHeight;
       const contactHeight = contactCard.offsetHeight;
+      const teamControlsHeight = teamControls?.offsetHeight ?? 0;
 
       const openingBaseMax = Math.round(
         Math.min(viewportH * 0.28, openingHeight * 0.58, Math.max(viewportH * 0.19, 145))
@@ -106,7 +108,7 @@ export default function Home() {
       );
 
       const contactBaseMax = Math.round(
-        Math.min(viewportH * 0.42, contactHeight * 0.5, Math.max(viewportH * 0.26, 210))
+        Math.min(viewportH * 0.46, contactHeight * 0.54, Math.max(viewportH * 0.3, 235))
       );
 
       const openingMinVisible = clamp(viewportH * 0.25, 145, 210);
@@ -119,7 +121,7 @@ export default function Home() {
 
       const contactSafeMax = Math.max(
         0,
-        contactTop - teamTop + teamBaseMax - teamMinVisible
+        contactTop - teamTop + teamBaseMax - teamMinVisible + teamControlsHeight * 0.9
       );
 
       const revealRange = Math.round(
@@ -128,10 +130,8 @@ export default function Home() {
 
       const overlayRange = Math.round(clamp(viewportH * 0.34, 220, 360));
 
-      // Deutlich früherer Start, damit Kontakt schon sichtbar "anrollt",
-      // während Team noch im Fokus ist.
       const contactDelayStart = Math.round(
-        Math.max(30, teamTop - viewportH * 0.42)
+        Math.max(24, teamTop - viewportH * 0.56)
       );
 
       metricsRef.current = {
@@ -246,7 +246,7 @@ export default function Home() {
       const contactParallax = getDelayedParallax(
         scroll,
         contactDelayStart,
-        0.65,
+        0.72,
         contactMax
       );
 
@@ -320,8 +320,6 @@ export default function Home() {
 
   const scrollToContact = () => {
     const { contactTop, contactMax } = metricsRef.current;
-
-    // Direkt den Endzustand anfahren, damit Kontakt oben bündig sitzt
     const target = contactTop - contactMax;
 
     window.scrollTo({
