@@ -116,7 +116,7 @@ export default function Home() {
         Math.min(viewportH * 0.16, contactHeight * 0.26, Math.max(viewportH * 0.09, 70))
       );
 
-      const openingMinVisible = clamp(viewportH * 0.19, 110, 160);
+      const openingMinVisible = clamp(viewportH * 0.26, 150, 220);
       const teamMinVisible = clamp(viewportH * 0.2, 120, 190);
 
       const teamSafeMax = Math.max(
@@ -130,7 +130,7 @@ export default function Home() {
       );
 
       const revealRange = Math.round(
-        clamp(openingHeight * 0.42, 150, Math.max(viewportH * 0.24, 190))
+        clamp(openingHeight * 0.42, 160, Math.max(viewportH * 0.25, 210))
       );
 
       const overlayRange = Math.round(clamp(viewportH * 0.34, 220, 360));
@@ -215,7 +215,7 @@ export default function Home() {
       }
 
       const titleOpacity = clamp(scroll / revealRange, 0, 1);
-      const timesOpacity = clamp((scroll - revealRange * 0.39) / revealRange, 0, 1);
+      const timesOpacity = clamp((scroll - revealRange * 0.34) / revealRange, 0, 1);
 
       if (title) {
         title.style.opacity = String(titleOpacity);
@@ -443,30 +443,32 @@ export default function Home() {
       </section>
 
       <section id="opening" className="opening-card" ref={openingRef}>
-        <div className="opening-card-inner">
-          <h2 className="opening-title">Öffnungszeiten</h2>
+        <div className="opening-card-inner opening-card-large">
+          <div className="opening-content-shell">
+            <h2 className="opening-title">Öffnungszeiten</h2>
 
-          <div className="opening-status">
-            <span className={`status-dot ${isOpen ? "open" : "closed"}`}></span>
-            <span className="status-text">
-              {isOpen ? "Jetzt geöffnet" : "Jetzt geschlossen"}
-            </span>
-          </div>
-
-          <div className="opening-times">
-            <div className="opening-row">
-              <span>Montag – Freitag</span>
-              <span>09:00 – 19:00</span>
+            <div className="opening-status">
+              <span className={`status-dot ${isOpen ? "open" : "closed"}`}></span>
+              <span className="status-text">
+                {isOpen ? "Jetzt geöffnet" : "Jetzt geschlossen"}
+              </span>
             </div>
 
-            <div className="opening-row">
-              <span>Samstag</span>
-              <span>09:00 – 17:00</span>
-            </div>
+            <div className="opening-times">
+              <div className="opening-row">
+                <span className="opening-day">Montag – Freitag</span>
+                <span className="opening-time">09:00 – 19:00</span>
+              </div>
 
-            <div className="opening-row">
-              <span>Sonntag</span>
-              <span>Geschlossen</span>
+              <div className="opening-row">
+                <span className="opening-day">Samstag</span>
+                <span className="opening-time">09:00 – 17:00</span>
+              </div>
+
+              <div className="opening-row">
+                <span className="opening-day">Sonntag</span>
+                <span className="opening-time">Geschlossen</span>
+              </div>
             </div>
           </div>
         </div>

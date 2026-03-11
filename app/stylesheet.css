@@ -13,6 +13,7 @@
   --hero-media-ratio: 63 / 100;
   --team-card-overlap: clamp(-120px, -14vw, -80px);
   --team-inner-min-h: clamp(540px, 72svh, 760px);
+  --opening-inner-min-h: clamp(420px, 58svh, 620px);
   --team-profile-min-h: clamp(360px, 50svh, 560px);
 }
 
@@ -316,6 +317,23 @@ body {
   color: #f3f3f3;
 }
 
+.opening-card-large {
+  min-height: var(--opening-inner-min-h);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding-top: clamp(26px, 4.4svh, 42px);
+  padding-bottom: clamp(28px, 5svh, 42px);
+}
+
+.opening-content-shell {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .team-card .opening-card-inner {
   min-height: var(--team-inner-min-h);
   display: flex;
@@ -368,26 +386,33 @@ body {
 .opening-times {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.8svh, 18px);
+  gap: clamp(18px, 2.4svh, 28px);
+  margin-top: clamp(26px, 3.6svh, 38px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
-  font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+  font-size: clamp(1rem, 2.9vw, 1.12rem);
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
 .opening-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  opacity: 0.9;
+  column-gap: 14px;
+  opacity: 0.95;
 }
 
-.opening-row span:last-child {
+.opening-day {
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.opening-time {
   text-align: right;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 /* STATUS */
@@ -397,11 +422,11 @@ body {
   justify-content: center;
   align-items: center;
   gap: clamp(6px, 2vw, 8px);
-  margin-top: clamp(-32px, -4svh, -20px);
-  margin-bottom: clamp(16px, 3vw, 20px);
+  margin-top: clamp(-10px, -1svh, -4px);
+  margin-bottom: clamp(12px, 2vw, 16px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
-  font-size: clamp(0.84rem, 2.2vw, 0.9rem);
+  font-size: clamp(0.9rem, 2.4vw, 1rem);
   transform: translateY(10px);
   transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
@@ -684,6 +709,7 @@ body {
     --hero-title-top: 22px;
     --hero-actions-bottom: 16px;
     --team-card-overlap: clamp(-104px, -13vw, -74px);
+    --opening-inner-min-h: clamp(390px, 56svh, 560px);
   }
 
   .hero-title-main {
@@ -709,6 +735,23 @@ body {
     width: 24px;
     height: 24px;
   }
+
+  .opening-times {
+    font-size: 0.98rem;
+    gap: 16px;
+  }
+
+  .opening-row {
+    column-gap: 10px;
+  }
+
+  .opening-day {
+    font-size: 0.98rem;
+  }
+
+  .opening-time {
+    font-size: 0.98rem;
+  }
 }
 
 @media (min-width: 380px) and (max-width: 414px) {
@@ -722,6 +765,7 @@ body {
     --hero-media-ratio: 65 / 100;
     --hero-title-top: 28px;
     --team-card-overlap: clamp(-126px, -13vw, -86px);
+    --opening-inner-min-h: clamp(440px, 58svh, 640px);
   }
 }
 
