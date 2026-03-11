@@ -577,6 +577,24 @@ export default function Home() {
         <div className="opening-card-inner contact-card-large">
           <div className="contact-content-shell">
             <h2 className="opening-title contact-title-visible">Kontakt</h2>
+
+            <div className="contact-map-card">
+              <div className="contact-address-panel">
+                <div className="contact-address-label">Adresse</div>
+
+                <div className="contact-address-line contact-address-street">
+                  Marktstr. 133
+                </div>
+                
+                <div className="contact-address-line contact-address-city">
+                  46045 Oberhausen
+                </div>
+
+                <a className="contact-address-phone" href="tel:020874183626">
+                  0208 / 741 836 26
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
