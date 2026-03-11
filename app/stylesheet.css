@@ -9,6 +9,8 @@
   --hero-actions-bottom: clamp(18px, 5vw, 28px);
   --hero-icon-size: clamp(38px, 10vw, 42px);
   --hero-svg-size: clamp(26px, 7vw, 28px);
+  --hero-title-top: clamp(24px, 4.8vw, 34px);
+  --hero-media-ratio: 63 / 100;
   --team-card-overlap: clamp(-120px, -14vw, -80px);
   --team-inner-min-h: clamp(540px, 72svh, 760px);
   --team-profile-min-h: clamp(360px, 50svh, 560px);
@@ -129,19 +131,28 @@ body {
   margin-top: clamp(16px, 5vw, 20px);
 }
 
-.hero-video video {
+.hero-media {
+  position: relative;
   width: 100%;
-  height: auto;
+  aspect-ratio: var(--hero-media-ratio);
+  border-radius: var(--video-radius);
+  overflow: hidden;
+}
+
+.hero-media video {
+  width: 100%;
+  height: 100%;
   display: block;
+  object-fit: cover;
   border-radius: var(--video-radius);
   transform: translateZ(0);
 }
 
-.hero-video::before {
+.hero-media::before {
   content: "";
   position: absolute;
-  left: var(--side-space);
-  right: var(--side-space);
+  left: 0;
+  right: 0;
   top: 0;
   height: var(--hero-overlay-height);
   border-top-left-radius: var(--video-radius);
@@ -158,10 +169,7 @@ body {
 
 .video-dark-overlay {
   position: absolute;
-  top: 0;
-  left: var(--side-space);
-  right: var(--side-space);
-  bottom: 0;
+  inset: 0;
   border-radius: var(--video-radius);
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
@@ -174,12 +182,13 @@ body {
 
 .hero-title {
   position: absolute;
-  top: 4%;
+  top: var(--hero-title-top);
   left: 0;
   right: 0;
   text-align: center;
   color: #f3f3f3;
   z-index: 3;
+  padding: 0 12px;
 }
 
 .hero-title-main {
@@ -207,8 +216,8 @@ body {
 .hero-actions {
   position: absolute;
   bottom: var(--hero-actions-bottom);
-  left: var(--side-space);
-  right: var(--side-space);
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   z-index: 3;
@@ -264,11 +273,11 @@ body {
 .opening-card,
 .contact-card {
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   position: relative;
   margin-left: var(--side-space);
   margin-right: var(--side-space);
-  margin-top: clamp(24px, 6vh, 48px);
+  margin-top: clamp(24px, 6svh, 48px);
   border-radius: var(--card-radius);
   transition: transform 0.25s ease-out;
 }
@@ -279,7 +288,7 @@ body {
 
 .team-card {
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   position: relative;
   margin-left: var(--side-space);
   margin-right: var(--side-space);
@@ -338,8 +347,8 @@ body {
   font-size: clamp(1.6rem, 4.8vw, 2rem);
   letter-spacing: 0.04em;
   line-height: 1.05;
-  margin-bottom: clamp(12px, 2.2vh, 22px);
-  transform: translateY(-2vh);
+  margin-bottom: clamp(12px, 2.2svh, 22px);
+  transform: translateY(-2svh);
   transition: opacity 0.25s ease-out;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
@@ -359,7 +368,7 @@ body {
 .opening-times {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.8vh, 18px);
+  gap: clamp(12px, 1.8svh, 18px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
   font-size: clamp(0.95rem, 2.6vw, 1.05rem);
@@ -371,7 +380,14 @@ body {
 .opening-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 12px;
   opacity: 0.9;
+}
+
+.opening-row span:last-child {
+  text-align: right;
+  white-space: nowrap;
 }
 
 /* STATUS */
@@ -381,7 +397,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: clamp(6px, 2vw, 8px);
-  margin-top: clamp(-32px, -4vh, -20px);
+  margin-top: clamp(-32px, -4svh, -20px);
   margin-bottom: clamp(16px, 3vw, 20px);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     Arial, sans-serif;
@@ -473,7 +489,6 @@ body {
   overflow: hidden;
   width: 100%;
   border-radius: clamp(20px, 5vw, 24px);
-  
 }
 
 .team-slider-track {
@@ -508,7 +523,7 @@ body {
 
 .team-profile-card-empty {
   justify-content: center;
-   height: 100%;
+  height: 100%;
 }
 
 .team-photo-wrap {
@@ -535,7 +550,6 @@ body {
   margin-top: clamp(-58px, -7svh, -36px);
 }
 
-
 .team-name {
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.85rem, 5vw, 2.2rem);
@@ -545,7 +559,6 @@ body {
   color: #222;
   margin: 0;
 }
-
 
 .team-role {
   margin-top: clamp(2px, 0.6svh, 6px);
@@ -585,7 +598,6 @@ body {
 .team-skills li + li {
   margin-top: clamp(5px, 0.9svh, 8px);
 }
-
 
 .team-quote {
   width: 100%;
@@ -662,6 +674,55 @@ body {
 .team-dot-nav.active {
   background: rgba(31, 31, 31, 0.72);
   transform: scale(1.15);
+}
+
+/* BREAKPOINTS */
+
+@media (max-width: 379px) {
+  :root {
+    --hero-media-ratio: 60 / 100;
+    --hero-title-top: 22px;
+    --hero-actions-bottom: 16px;
+    --team-card-overlap: clamp(-104px, -13vw, -74px);
+  }
+
+  .hero-title-main {
+    font-size: clamp(1.55rem, 7vw, 1.9rem);
+    letter-spacing: 0.11em;
+  }
+
+  .hero-title-sub {
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+  }
+
+  .hero-action {
+    font-size: 0.62rem;
+  }
+
+  .hero-icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 380px) and (max-width: 414px) {
+  :root {
+    --hero-media-ratio: 63 / 100;
+  }
+}
+
+@media (min-width: 415px) {
+  :root {
+    --hero-media-ratio: 65 / 100;
+    --hero-title-top: 28px;
+    --team-card-overlap: clamp(-126px, -13vw, -86px);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {

@@ -7,14 +7,24 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [teamIndex, setTeamIndex] = useState(0);
 
+  const heroRef = useRef(null);
   const openingRef = useRef(null);
   const teamRef = useRef(null);
-  const heroActionsRef = useRef(null);
-  const heroActionsInitialTopRef = useRef(0);
-  const heroActionsHeightRef = useRef(0);
+  const contactRef = useRef(null);
 
   const touchStartXRef = useRef(0);
   const touchStartYRef = useRef(0);
+
+  const metricsRef = useRef({
+    openingTop: 0,
+    teamTop: 0,
+    contactTop: 0,
+    openingMax: 0,
+    teamMax: 0,
+    contactMax: 0,
+    revealRange: 180,
+    overlayRange: 300,
+  });
 
   const teamMembers = [
     {
@@ -22,11 +32,7 @@ export default function Home() {
       name: "Arshad Al-Khidr",
       image: "/Arshad.png",
       role: "Salonleitung",
-      skills: [
-        "Hair & Beard Specialist",
-        "Color & Hairstyling",
-        "ㅤ",
-      ],
+      skills: ["Hair & Beard Specialist", "Color & Hairstyling", "ㅤ"],
       quote: "Ein guter Schnitt macht den Unterschied.",
       empty: false,
     },
@@ -83,28 +89,86 @@ export default function Home() {
     const times = document.querySelector(".opening-card .opening-times");
     const openingInner = document.querySelector(".opening-card .opening-card-inner");
 
-    if (heroActionsRef.current) {
-      const rect = heroActionsRef.current.getBoundingClientRect();
-      heroActionsInitialTopRef.current = rect.top;
-      heroActionsHeightRef.current = rect.height;
-    }
+    if (!openingCard || !teamCard || !contactCard || !openingInner) return;
 
-    const handleScroll = () => {
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const measureLayout = () => {
+      const viewportH = window.innerHeight;
+
+      const openingTop = openingCard.offsetTop;
+      const teamTop = teamCard.offsetTop;
+      const contactTop = contactCard.offsetTop;
+
+      const openingHeight = openingCard.offsetHeight;
+      const teamHeight = teamCard.offsetHeight;
+      const contactHeight = contactCard.offsetHeight;
+
+      const openingBaseMax = Math.round(
+        Math.min(viewportH * 0.28, openingHeight * 0.58, Math.max(viewportH * 0.19, 145))
+      );
+
+      const teamBaseMax = Math.round(
+        Math.min(viewportH * 0.42, teamHeight * 0.5, Math.max(viewportH * 0.3, 250))
+      );
+
+      const contactBaseMax = Math.round(
+        Math.min(viewportH * 0.16, contactHeight * 0.26, Math.max(viewportH * 0.09, 70))
+      );
+
+      const openingMinVisible = clamp(viewportH * 0.19, 110, 160);
+      const teamMinVisible = clamp(viewportH * 0.2, 120, 190);
+
+      const teamSafeMax = Math.max(
+        0,
+        teamTop - openingTop + openingBaseMax - openingMinVisible
+      );
+
+      const contactSafeMax = Math.max(
+        0,
+        contactTop - teamTop + teamBaseMax - teamMinVisible
+      );
+
+      const revealRange = Math.round(
+        clamp(openingHeight * 0.42, 150, Math.max(viewportH * 0.24, 190))
+      );
+
+      const overlayRange = Math.round(clamp(viewportH * 0.34, 220, 360));
+
+      metricsRef.current = {
+        openingTop,
+        teamTop,
+        contactTop,
+        openingMax: openingBaseMax,
+        teamMax: Math.min(teamBaseMax, teamSafeMax),
+        contactMax: Math.min(contactBaseMax, contactSafeMax),
+        revealRange,
+        overlayRange,
+      };
+    };
+
+    const getParallaxValue = (scroll, speed, max) => {
+      return Math.round(Math.min(scroll * speed, max));
+    };
+
+    let ticking = false;
+
+    const updateScroll = () => {
       const scroll = Math.round(window.scrollY);
+      const { openingMax, teamMax, contactMax, revealRange, overlayRange } =
+        metricsRef.current;
 
       if (scroll <= 0) {
         if (overlay) overlay.style.opacity = "0";
 
-        if (openingInner) {
-          openingInner.style.background = `
-            linear-gradient(
-              to bottom,
-              rgba(0, 0, 0, 0.35),
-              rgba(0, 0, 0, 0.35) 42%,
-              rgba(0, 0, 0, 0.35) 100%
-            )
-          `;
-        }
+        openingInner.style.background = `
+          linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.35) 42%,
+            rgba(0, 0, 0, 0.35) 100%
+          )
+        `;
 
         if (title) title.style.opacity = "0";
 
@@ -118,23 +182,23 @@ export default function Home() {
           times.style.transform = "translateY(10px)";
         }
 
-        if (openingCard) openingCard.style.transform = "translateZ(0)";
-        if (teamCard) teamCard.style.transform = "translateZ(0)";
-        if (contactCard) contactCard.style.transform = "translateZ(0)";
-
+        openingCard.style.transform = "translate3d(0, 0, 0)";
+        teamCard.style.transform = "translate3d(0, 0, 0)";
+        contactCard.style.transform = "translate3d(0, 0, 0)";
+        ticking = false;
         return;
       }
 
-      const darkness = Math.min(scroll / 300, 0.55);
+      const darkness = Math.min(scroll / overlayRange, 0.55);
       if (overlay) overlay.style.opacity = String(darkness);
 
-      if (openingCard && teamCard && openingInner) {
+      {
         const openingRect = openingCard.getBoundingClientRect();
         const teamRect = teamCard.getBoundingClientRect();
 
-        const triggerStart = openingRect.bottom - 180;
-        const progress = (triggerStart - teamRect.top) / 180;
-        const clamped = Math.min(Math.max(progress, 0), 1);
+        const triggerStart = openingRect.bottom - revealRange;
+        const progress = (triggerStart - teamRect.top) / revealRange;
+        const clamped = clamp(progress, 0, 1);
 
         const topDark = 0.35 + clamped * 0.34;
         const midDark = 0.35 + clamped * 0.22;
@@ -150,8 +214,8 @@ export default function Home() {
         `;
       }
 
-      const titleOpacity = Math.min(scroll / 180, 1);
-      const timesOpacity = Math.min(Math.max((scroll - 70) / 180, 0), 1);
+      const titleOpacity = clamp(scroll / revealRange, 0, 1);
+      const timesOpacity = clamp((scroll - revealRange * 0.39) / revealRange, 0, 1);
 
       if (title) {
         title.style.opacity = String(titleOpacity);
@@ -167,73 +231,89 @@ export default function Home() {
         times.style.transform = `translateY(${10 - timesOpacity * 10}px)`;
       }
 
-      const openingParallax = Math.round(Math.min(scroll * 0.7, 260));
-      const teamParallax = Math.round(Math.min(scroll * 0.65, 400));
-      const contactParallax = Math.round(Math.min(scroll * 0.26, 120));
+      const openingParallax = getParallaxValue(scroll, 0.7, openingMax);
+      const teamParallax = getParallaxValue(scroll, 0.65, teamMax);
+      const contactParallax = getParallaxValue(scroll, 0.26, contactMax);
 
-      if (openingCard) {
-        openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
-      }
+      openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
+      teamCard.style.transform = `translate3d(0, ${-teamParallax}px, 0)`;
+      contactCard.style.transform = `translate3d(0, ${-contactParallax}px, 0)`;
 
-      if (teamCard) {
-        teamCard.style.transform = `translate3d(0, ${-teamParallax}px, 0)`;
-      }
+      ticking = false;
+    };
 
-      if (contactCard) {
-        contactCard.style.transform = `translate3d(0, ${-contactParallax}px, 0)`;
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateScroll);
       }
     };
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    let resizeRaf = 0;
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleResize = () => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        measureLayout();
+        handleScroll();
+      });
+    };
+
+    measureLayout();
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    resizeObserver.observe(openingCard);
+    resizeObserver.observe(teamCard);
+    resizeObserver.observe(contactCard);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+      resizeObserver.disconnect();
+      cancelAnimationFrame(resizeRaf);
+    };
   }, []);
 
-  const scrollToOpening = () => {
-    const section = openingRef.current;
-    const heroActions = heroActionsRef.current;
+  const solveScrollTarget = (sectionTop, speed, max) => {
+    const saturationPoint = max / speed;
+    const beforeSaturation = (sectionTop + max) / (1 + speed);
 
-    if (!section || !heroActions) return;
-
-    const sectionTop = section.offsetTop;
-    const heroActionsTop = heroActions.offsetTop;
-    const heroActionsHeight = heroActions.offsetHeight;
-
-    const overlap = heroActionsHeight * 3.1;
-
-    let target = (sectionTop - heroActionsTop + overlap) / 0.7;
-
-    if (target * 0.7 > 260) {
-      target = sectionTop - heroActionsTop + overlap - 260;
+    if (beforeSaturation <= saturationPoint) {
+      return beforeSaturation;
     }
 
+    return sectionTop - max;
+  };
+
+  const scrollToOpening = () => {
+    if (!openingRef.current) return;
+
+    const { openingTop, openingMax } = metricsRef.current;
+    const target = solveScrollTarget(openingTop, 0.7, openingMax);
+
     window.scrollTo({
-      top: Math.max(0, target),
+      top: Math.max(0, Math.round(target)),
       behavior: "smooth",
     });
   };
 
   const scrollToTeam = () => {
-    const section = teamRef.current;
-    const heroActions = heroActionsRef.current;
+    if (!teamRef.current) return;
 
-    if (!section || !heroActions) return;
-
-    const sectionTop = section.offsetTop;
-    const heroActionsTop = heroActions.offsetTop;
-    const heroActionsHeight = heroActions.offsetHeight;
-
-    const overlap = heroActionsHeight * 6.6;
-
-    let target = (sectionTop - heroActionsTop + overlap) / 0.65;
-
-    if (target * 0.65 > 400) {
-      target = sectionTop - heroActionsTop + overlap - 400;
-    }
+    const { teamTop, teamMax } = metricsRef.current;
+    const target = solveScrollTarget(teamTop, 0.65, teamMax);
 
     window.scrollTo({
-      top: Math.max(0, target),
+      top: Math.max(0, Math.round(target)),
       behavior: "smooth",
     });
   };
@@ -315,48 +395,50 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="hero-video">
-        <video src="/salon.mp4" autoPlay muted loop playsInline />
+      <section className="hero-video" ref={heroRef}>
+        <div className="hero-media">
+          <video src="/salon.mp4" autoPlay muted loop playsInline />
 
-        <div className="video-dark-overlay" />
+          <div className="video-dark-overlay" />
 
-        <div className="hero-title">
-          <span className="hero-title-main">FRISEURSALON</span>
-          <span className="hero-title-sub">Hair • Color • Style</span>
-        </div>
+          <div className="hero-title">
+            <span className="hero-title-main">FRISEURSALON</span>
+            <span className="hero-title-sub">Hair • Color • Style</span>
+          </div>
 
-        <div className="hero-actions" ref={heroActionsRef}>
-          <button className="hero-action" onClick={scrollToOpening}>
-            <div className="hero-icon-wrapper">
-              <svg viewBox="0 0 24 24" className="hero-icon">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 7v5l3 2" />
-              </svg>
-            </div>
-            <span>Öffnungszeiten</span>
-          </button>
+          <div className="hero-actions">
+            <button className="hero-action" onClick={scrollToOpening}>
+              <div className="hero-icon-wrapper">
+                <svg viewBox="0 0 24 24" className="hero-icon">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 2" />
+                </svg>
+              </div>
+              <span>Öffnungszeiten</span>
+            </button>
 
-          <button className="hero-action" onClick={scrollToTeam}>
-            <div className="hero-icon-wrapper">
-              <svg viewBox="0 0 24 24" className="hero-icon">
-                <circle cx="9" cy="8" r="3" />
-                <circle cx="16" cy="9" r="2.5" />
-                <path d="M4 18c0-3 3-5 5-5s5 2 5 5" />
-                <path d="M14 18c0-2 2-3.5 4-3.5S22 16 22 18" />
-              </svg>
-            </div>
-            <span>Unser Team</span>
-          </button>
+            <button className="hero-action" onClick={scrollToTeam}>
+              <div className="hero-icon-wrapper">
+                <svg viewBox="0 0 24 24" className="hero-icon">
+                  <circle cx="9" cy="8" r="3" />
+                  <circle cx="16" cy="9" r="2.5" />
+                  <path d="M4 18c0-3 3-5 5-5s5 2 5 5" />
+                  <path d="M14 18c0-2 2-3.5 4-3.5S22 16 22 18" />
+                </svg>
+              </div>
+              <span>Unser Team</span>
+            </button>
 
-          <button className="hero-action">
-            <div className="hero-icon-wrapper">
-              <svg viewBox="0 0 24 24" className="hero-icon">
-                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
-            </div>
-            <span>Kontakt</span>
-          </button>
+            <button className="hero-action">
+              <div className="hero-icon-wrapper">
+                <svg viewBox="0 0 24 24" className="hero-icon">
+                  <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.5" />
+                </svg>
+              </div>
+              <span>Kontakt</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -477,7 +559,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="contact-card">
+      <section className="contact-card" ref={contactRef}>
         <div className="opening-card-inner">
           <h2 className="opening-title">Kontakt</h2>
         </div>
