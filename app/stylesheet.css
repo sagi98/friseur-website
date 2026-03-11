@@ -11,9 +11,13 @@
   --hero-svg-size: clamp(26px, 7vw, 28px);
   --hero-title-top: clamp(24px, 4.8vw, 34px);
   --hero-media-ratio: 63 / 100;
+
   --team-card-overlap: clamp(-120px, -14vw, -80px);
+  --contact-card-overlap: clamp(-122px, -13vw, -92px);
+
   --team-inner-min-h: clamp(540px, 72svh, 760px);
-  --opening-inner-min-h: clamp(420px, 58svh, 620px);
+  --opening-inner-min-h: clamp(430px, 59svh, 620px);
+  --contact-inner-min-h: clamp(430px, 59svh, 620px);
   --team-profile-min-h: clamp(360px, 50svh, 560px);
 }
 
@@ -152,9 +156,7 @@ body {
 .hero-media::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
+  inset: 0 0 auto 0;
   height: var(--hero-overlay-height);
   border-top-left-radius: var(--video-radius);
   border-top-right-radius: var(--video-radius);
@@ -272,35 +274,30 @@ body {
 /* CARDS */
 
 .opening-card,
+.team-card,
 .contact-card {
   will-change: transform;
   transform: translate3d(0, 0, 0);
   position: relative;
   margin-left: var(--side-space);
   margin-right: var(--side-space);
-  margin-top: clamp(24px, 6svh, 48px);
   border-radius: var(--card-radius);
   transition: transform 0.25s ease-out;
 }
 
 .opening-card {
   z-index: 4;
+  margin-top: clamp(24px, 6svh, 48px);
 }
 
 .team-card {
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  position: relative;
-  margin-left: var(--side-space);
-  margin-right: var(--side-space);
-  margin-top: var(--team-card-overlap);
-  border-radius: var(--card-radius);
   z-index: 6;
-  transition: transform 0.25s ease-out;
+  margin-top: var(--team-card-overlap);
 }
 
 .contact-card {
-  z-index: 3;
+  z-index: 7;
+  margin-top: var(--contact-card-overlap);
 }
 
 /* CARD INNER */
@@ -326,7 +323,8 @@ body {
   padding-bottom: clamp(28px, 5svh, 42px);
 }
 
-.opening-content-shell {
+.opening-content-shell,
+.contact-content-shell {
   width: 100%;
   min-height: 100%;
   display: flex;
@@ -334,7 +332,8 @@ body {
   justify-content: flex-start;
 }
 
-.team-card .opening-card-inner {
+.team-card .opening-card-inner,
+.contact-card .opening-card-inner {
   min-height: var(--team-inner-min-h);
   display: flex;
   align-items: center;
@@ -348,12 +347,12 @@ body {
   color: #1f1f1f;
 }
 
-.team-card .opening-card-inner,
-.contact-card .opening-card-inner {
-  min-height: var(--team-inner-min-h);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.contact-card-large {
+  min-height: var(--contact-inner-min-h);
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  padding-top: clamp(22px, 3.8svh, 32px);
+  padding-bottom: clamp(28px, 5svh, 40px);
 }
 
 /* TITLE */
@@ -379,6 +378,13 @@ body {
 
 .opening-card .opening-status {
   opacity: 0;
+}
+
+.contact-title-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  color: #1f1f1f;
+  margin-bottom: 0;
 }
 
 /* OPENING TIMES */
@@ -480,7 +486,7 @@ body {
   font-weight: 500;
 }
 
-/* TEAM SLIDER */
+/* TEAM */
 
 .team-card-inner {
   flex-direction: column;
@@ -653,6 +659,8 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: clamp(10px, 3vw, 14px);
+  position: relative;
+  z-index: 8;
 }
 
 .team-arrow {
@@ -701,6 +709,16 @@ body {
   transform: scale(1.15);
 }
 
+/* CONTACT */
+
+.contact-card-large {
+  min-height: var(--contact-inner-min-h);
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  padding-top: clamp(22px, 3.8svh, 32px);
+  padding-bottom: clamp(28px, 5svh, 40px);
+}
+
 /* BREAKPOINTS */
 
 @media (max-width: 379px) {
@@ -709,7 +727,9 @@ body {
     --hero-title-top: 22px;
     --hero-actions-bottom: 16px;
     --team-card-overlap: clamp(-104px, -13vw, -74px);
-    --opening-inner-min-h: clamp(390px, 56svh, 560px);
+    --contact-card-overlap: clamp(-114px, -12vw, -84px);
+    --opening-inner-min-h: clamp(400px, 58svh, 560px);
+    --contact-inner-min-h: clamp(400px, 58svh, 560px);
   }
 
   .hero-title-main {
@@ -745,10 +765,7 @@ body {
     column-gap: 10px;
   }
 
-  .opening-day {
-    font-size: 0.98rem;
-  }
-
+  .opening-day,
   .opening-time {
     font-size: 0.98rem;
   }
@@ -765,7 +782,9 @@ body {
     --hero-media-ratio: 65 / 100;
     --hero-title-top: 28px;
     --team-card-overlap: clamp(-126px, -13vw, -86px);
-    --opening-inner-min-h: clamp(440px, 58svh, 640px);
+    --contact-card-overlap: clamp(-126px, -12vw, -96px);
+    --opening-inner-min-h: clamp(440px, 60svh, 640px);
+    --contact-inner-min-h: clamp(440px, 60svh, 640px);
   }
 }
 

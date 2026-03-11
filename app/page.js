@@ -7,7 +7,6 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [teamIndex, setTeamIndex] = useState(0);
 
-  const heroRef = useRef(null);
   const openingRef = useRef(null);
   const teamRef = useRef(null);
   const contactRef = useRef(null);
@@ -22,6 +21,7 @@ export default function Home() {
     openingMax: 0,
     teamMax: 0,
     contactMax: 0,
+    contactDelayStart: 0,
     revealRange: 180,
     overlayRange: 300,
   });
@@ -49,33 +49,9 @@ export default function Home() {
       quote: "Schönheit liegt im Detail",
       empty: false,
     },
-    {
-      id: 3,
-      name: "",
-      image: "",
-      role: "",
-      skills: [],
-      quote: "",
-      empty: true,
-    },
-    {
-      id: 4,
-      name: "",
-      image: "",
-      role: "",
-      skills: [],
-      quote: "",
-      empty: true,
-    },
-    {
-      id: 5,
-      name: "",
-      image: "",
-      role: "",
-      skills: [],
-      quote: "",
-      empty: true,
-    },
+    { id: 3, name: "", image: "", role: "", skills: [], quote: "", empty: true },
+    { id: 4, name: "", image: "", role: "", skills: [], quote: "", empty: true },
+    { id: 5, name: "", image: "", role: "", skills: [], quote: "", empty: true },
   ];
 
   useEffect(() => {
@@ -92,6 +68,23 @@ export default function Home() {
     if (!openingCard || !teamCard || !contactCard || !openingInner) return;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const getLinearParallax = (scroll, speed, max) => {
+      return Math.round(Math.min(scroll * speed, max));
+    };
+
+    const getDelayedParallax = (scroll, delayStart, speed, max) => {
+      if (scroll <= delayStart) return 0;
+      return Math.round(Math.min((scroll - delayStart) * speed, max));
+    };
+
+    const solveLinearTarget = (sectionTop, speed, max) => {
+      const saturationPoint = max / speed;
+      const candidate = sectionTop / (1 + speed);
+
+      if (candidate <= saturationPoint) return candidate;
+      return sectionTop - max;
+    };
 
     const measureLayout = () => {
       const viewportH = window.innerHeight;
@@ -113,10 +106,10 @@ export default function Home() {
       );
 
       const contactBaseMax = Math.round(
-        Math.min(viewportH * 0.16, contactHeight * 0.26, Math.max(viewportH * 0.09, 70))
+        Math.min(viewportH * 0.42, contactHeight * 0.5, Math.max(viewportH * 0.26, 210))
       );
 
-      const openingMinVisible = clamp(viewportH * 0.26, 150, 220);
+      const openingMinVisible = clamp(viewportH * 0.25, 145, 210);
       const teamMinVisible = clamp(viewportH * 0.2, 120, 190);
 
       const teamSafeMax = Math.max(
@@ -135,6 +128,12 @@ export default function Home() {
 
       const overlayRange = Math.round(clamp(viewportH * 0.34, 220, 360));
 
+      // Deutlich früherer Start, damit Kontakt schon sichtbar "anrollt",
+      // während Team noch im Fokus ist.
+      const contactDelayStart = Math.round(
+        Math.max(30, teamTop - viewportH * 0.42)
+      );
+
       metricsRef.current = {
         openingTop,
         teamTop,
@@ -142,21 +141,24 @@ export default function Home() {
         openingMax: openingBaseMax,
         teamMax: Math.min(teamBaseMax, teamSafeMax),
         contactMax: Math.min(contactBaseMax, contactSafeMax),
+        contactDelayStart,
         revealRange,
         overlayRange,
       };
-    };
-
-    const getParallaxValue = (scroll, speed, max) => {
-      return Math.round(Math.min(scroll * speed, max));
     };
 
     let ticking = false;
 
     const updateScroll = () => {
       const scroll = Math.round(window.scrollY);
-      const { openingMax, teamMax, contactMax, revealRange, overlayRange } =
-        metricsRef.current;
+      const {
+        openingMax,
+        teamMax,
+        contactMax,
+        contactDelayStart,
+        revealRange,
+        overlayRange,
+      } = metricsRef.current;
 
       if (scroll <= 0) {
         if (overlay) overlay.style.opacity = "0";
@@ -214,26 +216,39 @@ export default function Home() {
         `;
       }
 
-      const titleOpacity = clamp(scroll / revealRange, 0, 1);
-      const timesOpacity = clamp((scroll - revealRange * 0.34) / revealRange, 0, 1);
+      {
+        const openingRect = openingCard.getBoundingClientRect();
+        const viewportH = window.innerHeight;
 
-      if (title) {
-        title.style.opacity = String(titleOpacity);
+        const revealStart = viewportH - openingRect.top;
+        const revealProgress = clamp(revealStart / revealRange, 0, 1);
+        const timesProgress = clamp(
+          (revealStart - revealRange * 0.34) / revealRange,
+          0,
+          1
+        );
+
+        if (title) title.style.opacity = String(revealProgress);
+
+        if (status) {
+          status.style.opacity = String(revealProgress);
+          status.style.transform = `translateY(${10 - revealProgress * 10}px)`;
+        }
+
+        if (times) {
+          times.style.opacity = String(timesProgress);
+          times.style.transform = `translateY(${10 - timesProgress * 10}px)`;
+        }
       }
 
-      if (status) {
-        status.style.opacity = String(titleOpacity);
-        status.style.transform = `translateY(${10 - titleOpacity * 10}px)`;
-      }
-
-      if (times) {
-        times.style.opacity = String(timesOpacity);
-        times.style.transform = `translateY(${10 - timesOpacity * 10}px)`;
-      }
-
-      const openingParallax = getParallaxValue(scroll, 0.7, openingMax);
-      const teamParallax = getParallaxValue(scroll, 0.65, teamMax);
-      const contactParallax = getParallaxValue(scroll, 0.26, contactMax);
+      const openingParallax = getLinearParallax(scroll, 0.7, openingMax);
+      const teamParallax = getLinearParallax(scroll, 0.65, teamMax);
+      const contactParallax = getDelayedParallax(
+        scroll,
+        contactDelayStart,
+        0.65,
+        contactMax
+      );
 
       openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
       teamCard.style.transform = `translate3d(0, ${-teamParallax}px, 0)`;
@@ -283,22 +298,9 @@ export default function Home() {
     };
   }, []);
 
-  const solveScrollTarget = (sectionTop, speed, max) => {
-    const saturationPoint = max / speed;
-    const beforeSaturation = (sectionTop + max) / (1 + speed);
-
-    if (beforeSaturation <= saturationPoint) {
-      return beforeSaturation;
-    }
-
-    return sectionTop - max;
-  };
-
   const scrollToOpening = () => {
-    if (!openingRef.current) return;
-
     const { openingTop, openingMax } = metricsRef.current;
-    const target = solveScrollTarget(openingTop, 0.7, openingMax);
+    const target = solveLinearTarget(openingTop, 0.7, openingMax);
 
     window.scrollTo({
       top: Math.max(0, Math.round(target)),
@@ -307,16 +309,34 @@ export default function Home() {
   };
 
   const scrollToTeam = () => {
-    if (!teamRef.current) return;
-
     const { teamTop, teamMax } = metricsRef.current;
-    const target = solveScrollTarget(teamTop, 0.65, teamMax);
+    const target = solveLinearTarget(teamTop, 0.65, teamMax);
 
     window.scrollTo({
       top: Math.max(0, Math.round(target)),
       behavior: "smooth",
     });
   };
+
+  const scrollToContact = () => {
+    const { contactTop, contactMax } = metricsRef.current;
+
+    // Direkt den Endzustand anfahren, damit Kontakt oben bündig sitzt
+    const target = contactTop - contactMax;
+
+    window.scrollTo({
+      top: Math.max(0, Math.round(target)),
+      behavior: "smooth",
+    });
+  };
+
+  function solveLinearTarget(sectionTop, speed, max) {
+    const saturationPoint = max / speed;
+    const candidate = sectionTop / (1 + speed);
+
+    if (candidate <= saturationPoint) return candidate;
+    return sectionTop - max;
+  }
 
   const nextTeam = () => {
     setTeamIndex((prev) => Math.min(prev + 1, teamMembers.length - 1));
@@ -337,9 +357,7 @@ export default function Home() {
     const deltaX = touch.clientX - touchStartXRef.current;
     const deltaY = touch.clientY - touchStartYRef.current;
 
-    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY)) {
-      return;
-    }
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
 
     if (deltaX < 0) {
       nextTeam();
@@ -395,10 +413,9 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="hero-video" ref={heroRef}>
+      <section className="hero-video">
         <div className="hero-media">
           <video src="/salon.mp4" autoPlay muted loop playsInline />
-
           <div className="video-dark-overlay" />
 
           <div className="hero-title">
@@ -429,7 +446,7 @@ export default function Home() {
               <span>Unser Team</span>
             </button>
 
-            <button className="hero-action">
+            <button className="hero-action" onClick={scrollToContact}>
               <div className="hero-icon-wrapper">
                 <svg viewBox="0 0 24 24" className="hero-icon">
                   <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" />
@@ -502,9 +519,7 @@ export default function Home() {
 
                       <div className="team-name-block">
                         <h3 className="team-name">{member.name}</h3>
-
                         <div className="team-role">{member.role}</div>
-
                         <div className="team-divider"></div>
 
                         <ul className="team-skills">
@@ -514,7 +529,6 @@ export default function Home() {
                         </ul>
 
                         <div className="team-divider"></div>
-
                         <div className="team-quote">„{member.quote}“</div>
                       </div>
                     </div>
@@ -562,8 +576,10 @@ export default function Home() {
       </section>
 
       <section className="contact-card" ref={contactRef}>
-        <div className="opening-card-inner">
-          <h2 className="opening-title">Kontakt</h2>
+        <div className="opening-card-inner contact-card-large">
+          <div className="contact-content-shell">
+            <h2 className="opening-title contact-title-visible">Kontakt</h2>
+          </div>
         </div>
       </section>
     </main>
