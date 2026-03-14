@@ -1003,3 +1003,118 @@ body {
     transform: translateY(-1px);
   }
 }
+
+/* SOCIAL CARD */
+
+.social-card {
+  position: relative;
+  z-index: 8;
+  margin-top: -256px;
+  margin-left: var(--side-space);
+  margin-right: var(--side-space);
+  margin-bottom: 28px;
+  border-radius: var(--card-radius);
+}
+
+.social-card-inner {
+  width: 100%;
+  min-height: clamp(170px, 24svh, 220px);
+  border-radius: var(--card-radius);
+  padding: clamp(22px, 5vw, 30px) clamp(18px, 4vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 22px);
+
+  background: rgba(248, 246, 243, 0.52);
+  backdrop-filter: blur(22px) saturate(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.social-title {
+  margin: 0;
+  text-align: center;
+  color: #2f2a26;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(1.9rem, 5.4vw, 2.3rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.social-links {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 22px);
+}
+
+.social-icon-link {
+  flex: 1;
+  max-width: 160px;
+  min-height: clamp(88px, 12svh, 110px);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(18px) saturate(1.04);
+  -webkit-backdrop-filter: blur(18px) saturate(1.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.social-icon-link:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .social-icon-link:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.36);
+  }
+}
+
+@media (max-width: 379px) {
+  .social-card {
+    margin-top: -10px;
+  }
+
+  .social-card-inner {
+    min-height: 160px;
+    padding: 20px 16px;
+  }
+
+  .social-icon-link {
+    min-height: 82px;
+    border-radius: 20px;
+  }
+
+  .social-icon {
+    width: 34px;
+    height: 34px;
+  }
+}

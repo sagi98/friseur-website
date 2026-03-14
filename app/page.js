@@ -620,6 +620,34 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </main>
+
+   <section className="social-card">
+        <div className="social-card-inner">
+          <h2 className="social-title">Social</h2>
+
+          <div className="social-links">
+            <a
+              className="social-icon-link"
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram öffnen"
+            >
+              <img src="/instagram-black.svg" alt="Instagram" className="social-icon" />
+            </a>
+
+            <a
+              className="social-icon-link"
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok öffnen"
+            >
+              <img src="/tiktok-black.png" alt="TikTok" className="social-icon" />
+            </a>
+          </div>
+        </div>
+      </section>
+          </main>
   );
 }
