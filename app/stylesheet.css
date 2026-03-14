@@ -15,8 +15,6 @@
 
   --team-card-overlap: clamp(-120px, -14vw, -80px);
   --contact-card-overlap: clamp(-122px, -13vw, -92px);
-  --social-card-overlap: clamp(-290px, -31vw, -245px);
-  --social-card-bottom-space: clamp(10px, 2.4vw, 14px);
 
   --contact-map-min-h: clamp(430px, 58svh, 620px);
   --team-inner-min-h: clamp(540px, 72svh, 760px);
@@ -280,8 +278,7 @@ body {
 
 .opening-card,
 .team-card,
-.contact-card,
-.social-card {
+.contact-card {
   will-change: transform;
   transform: translate3d(0, 0, 0);
   position: relative;
@@ -383,7 +380,7 @@ body {
   align-items: stretch !important;
   justify-content: flex-start !important;
   padding-top: clamp(22px, 3.8svh, 32px);
-  padding-bottom: clamp(10px, 2svh, 16px);
+  padding-bottom: 0;
 }
 
 /* TITLE */
@@ -924,107 +921,6 @@ body {
   }
 }
 
-/* SOCIAL CARD */
-
-.social-card {
-  z-index: 8;
-  margin-top: var(--social-card-overlap);
-  margin-bottom: var(--social-card-bottom-space);
-}
-
-.social-card-inner {
-  width: 100%;
-  min-height: clamp(145px, 18svh, 175px);
-  border-radius: var(--card-radius);
-  padding: clamp(18px, 4vw, 24px) clamp(16px, 4vw, 22px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(12px, 2.4vw, 18px);
-  background: rgba(248, 246, 243, 0.52);
-  backdrop-filter: blur(22px) saturate(1.08);
-  -webkit-backdrop-filter: blur(22px) saturate(1.08);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.social-title {
-  margin: 0;
-  text-align: center;
-  color: #2f2a26;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  font-size: clamp(1.8rem, 5vw, 2.2rem);
-  letter-spacing: 0.03em;
-  line-height: 1;
-}
-
-.social-links {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: clamp(12px, 3.5vw, 20px);
-}
-
-.social-icon-link {
-  flex: 1;
-  min-width: 0;
-  min-height: clamp(74px, 9.2svh, 92px);
-  border-radius: clamp(18px, 4.5vw, 24px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(18px) saturate(1.04);
-  -webkit-backdrop-filter: blur(18px) saturate(1.04);
-  border: 1px solid rgba(255, 255, 255, 0.56);
-  box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.46);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-}
-
-.social-icon-link:active {
-  transform: scale(0.97);
-  opacity: 0.9;
-}
-
-.social-icon {
-  width: clamp(30px, 8vw, 40px);
-  height: clamp(30px, 8vw, 40px);
-  object-fit: contain;
-  display: block;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .social-icon-link:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 14px 28px rgba(0, 0, 0, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.36);
-  }
-}
-
-/* OPTIONAL FOOTER LINKS */
-
-.legal-links {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin: 0 0 14px;
-  padding: 0 var(--side-space);
-}
-
-.legal-links a {
-  font-size: 0.82rem;
-  color: rgba(31, 31, 31, 0.72);
-  text-decoration: none;
-}
-
 /* BREAKPOINTS */
 
 @media (max-width: 379px) {
@@ -1034,8 +930,6 @@ body {
     --hero-actions-bottom: 16px;
     --team-card-overlap: clamp(-104px, -13vw, -74px);
     --contact-card-overlap: clamp(-114px, -12vw, -84px);
-    --social-card-overlap: clamp(-260px, -29vw, -220px);
-    --social-card-bottom-space: 8px;
     --opening-inner-min-h: clamp(400px, 58svh, 560px);
     --contact-inner-min-h: clamp(400px, 58svh, 560px);
   }
@@ -1077,37 +971,11 @@ body {
   .opening-time {
     font-size: 0.98rem;
   }
-
-  .social-card-inner {
-    min-height: 136px;
-    padding: 16px 14px;
-    gap: 12px;
-  }
-
-  .social-title {
-    font-size: clamp(1.6rem, 6vw, 1.9rem);
-  }
-
-  .social-links {
-    gap: 10px;
-  }
-
-  .social-icon-link {
-    min-height: 68px;
-    border-radius: 18px;
-  }
-
-  .social-icon {
-    width: 28px;
-    height: 28px;
-  }
 }
 
 @media (min-width: 380px) and (max-width: 414px) {
   :root {
     --hero-media-ratio: 63 / 100;
-    --social-card-overlap: clamp(-280px, -30vw, -235px);
-    --social-card-bottom-space: 10px;
   }
 }
 
@@ -1117,19 +985,149 @@ body {
     --hero-title-top: 28px;
     --team-card-overlap: clamp(-126px, -13vw, -86px);
     --contact-card-overlap: clamp(-126px, -12vw, -96px);
-    --social-card-overlap: clamp(-300px, -32vw, -255px);
-    --social-card-bottom-space: 12px;
     --opening-inner-min-h: clamp(440px, 60svh, 640px);
     --contact-inner-min-h: clamp(440px, 60svh, 640px);
-  }
-
-  .social-card-inner {
-    min-height: 152px;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .team-arrow:hover {
     transform: translateY(-1px);
+  }
+}
+
+/* SOCIAL CARD */
+
+.social-card {
+  position: relative;
+  z-index: 8;
+  margin-top: clamp(-268px, -31vw, -220px);
+  margin-left: var(--side-space);
+  margin-right: var(--side-space);
+  margin-bottom: clamp(10px, 2vw, 14px);
+  border-radius: var(--card-radius);
+}
+
+.social-card-inner {
+  width: 100%;
+  min-height: clamp(170px, 22svh, 210px);
+  border-radius: var(--card-radius);
+  padding: clamp(20px, 4.5vw, 28px) clamp(16px, 4vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 22px);
+  background: rgba(248, 246, 243, 0.52);
+  backdrop-filter: blur(22px) saturate(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.social-title {
+  margin: 0;
+  text-align: center;
+  color: #2f2a26;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 5vw, 2.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.social-links {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 3.5vw, 20px);
+}
+
+.social-icon-link {
+  flex: 1;
+  min-width: 0;
+  min-height: clamp(82px, 11svh, 104px);
+  border-radius: clamp(18px, 4.5vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(18px) saturate(1.04);
+  -webkit-backdrop-filter: blur(18px) saturate(1.04);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.social-icon-link:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.social-icon {
+  width: clamp(30px, 8vw, 40px);
+  height: clamp(30px, 8vw, 40px);
+  object-fit: contain;
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .social-icon-link:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.36);
+  }
+}
+
+@media (max-width: 379px) {
+  .social-card {
+    margin-top: clamp(-242px, -30vw, -198px);
+    margin-bottom: 10px;
+  }
+
+  .social-card-inner {
+    min-height: 150px;
+    padding: 18px 14px;
+    gap: 14px;
+  }
+
+  .social-title {
+    font-size: clamp(1.65rem, 6vw, 1.95rem);
+  }
+
+  .social-links {
+    gap: 10px;
+  }
+
+  .social-icon-link {
+    min-height: 74px;
+    border-radius: 18px;
+  }
+
+  .social-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (min-width: 380px) and (max-width: 414px) {
+  .social-card {
+    margin-top: clamp(-258px, -30vw, -210px);
+  }
+}
+
+@media (min-width: 415px) {
+  .social-card {
+    margin-top: clamp(-276px, -30vw, -228px);
+  }
+
+  .social-card-inner {
+    min-height: 180px;
   }
 }
