@@ -3,6 +3,7 @@
   --video-radius: clamp(16px, 4vw, 20px);
   --card-radius: clamp(24px, 6vw, 28px);
   --header-logo-width: clamp(96px, 26vw, 110px);
+  /* --header-logo-width: clamp(72px, 20vw, 86px); */
   --menu-width: clamp(32px, 8vw, 34px);
   --menu-height: clamp(22px, 6vw, 24px);
   --hero-overlay-height: clamp(78px, 20vw, 90px);
@@ -15,7 +16,9 @@
   --team-card-overlap: clamp(-120px, -14vw, -80px);
   --contact-card-overlap: clamp(-122px, -13vw, -92px);
 
+  --contact-map-min-h: clamp(430px, 58svh, 620px);
   --team-inner-min-h: clamp(540px, 72svh, 760px);
+
   --opening-inner-min-h: clamp(430px, 59svh, 620px);
   --contact-inner-min-h: clamp(430px, 59svh, 620px);
   --team-profile-min-h: clamp(360px, 50svh, 560px);
@@ -746,7 +749,7 @@ body {
 
 .contact-map-card {
   width: 100%;
-  min-height: var(--team-profile-min-h);
+  min-height: var(--contact-map-min-h);
   border-radius: clamp(20px, 5vw, 24px);
   margin-top: 0;
   position: relative;
@@ -754,8 +757,8 @@ body {
   background:
     linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.10),
-      rgba(255, 255, 255, 0.22)
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.25)
     ),
     url("/contact-map.png");
   background-size: cover;
