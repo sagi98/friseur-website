@@ -10,6 +10,7 @@ export default function Home() {
   const openingRef = useRef(null);
   const teamRef = useRef(null);
   const contactRef = useRef(null);
+  const socialRef = useRef(null);
 
   const touchStartXRef = useRef(0);
   const touchStartYRef = useRef(0);
@@ -18,10 +19,13 @@ export default function Home() {
     openingTop: 0,
     teamTop: 0,
     contactTop: 0,
+    socialTop: 0,
     openingMax: 0,
     teamMax: 0,
     contactMax: 0,
+    socialMax: 0,
     contactDelayStart: 0,
+    socialDelayStart: 0,
     revealRange: 180,
     overlayRange: 300,
   });
@@ -58,6 +62,7 @@ export default function Home() {
     const openingCard = document.querySelector(".opening-card");
     const teamCard = document.querySelector(".team-card");
     const contactCard = document.querySelector(".contact-card");
+    const socialCard = document.querySelector(".social-card");
     const teamControls = document.querySelector(".team-controls");
 
     const overlay = document.querySelector(".video-dark-overlay");
@@ -66,7 +71,7 @@ export default function Home() {
     const times = document.querySelector(".opening-card .opening-times");
     const openingInner = document.querySelector(".opening-card .opening-card-inner");
 
-    if (!openingCard || !teamCard || !contactCard || !openingInner) return;
+    if (!openingCard || !teamCard || !contactCard || !socialCard || !openingInner) return;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -85,10 +90,12 @@ export default function Home() {
       const openingTop = openingCard.offsetTop;
       const teamTop = teamCard.offsetTop;
       const contactTop = contactCard.offsetTop;
+      const socialTop = socialCard.offsetTop;
 
       const openingHeight = openingCard.offsetHeight;
       const teamHeight = teamCard.offsetHeight;
       const contactHeight = contactCard.offsetHeight;
+      const socialHeight = socialCard.offsetHeight;
       const teamControlsHeight = teamControls?.offsetHeight ?? 0;
 
       const openingBaseMax = Math.round(
@@ -103,8 +110,13 @@ export default function Home() {
         Math.min(viewportH * 0.46, contactHeight * 0.54, Math.max(viewportH * 0.3, 235))
       );
 
+      const socialBaseMax = Math.round(
+        Math.min(viewportH * 0.28, socialHeight * 0.42, Math.max(viewportH * 0.16, 120))
+      );
+
       const openingMinVisible = clamp(viewportH * 0.25, 145, 210);
       const teamMinVisible = clamp(viewportH * 0.2, 120, 190);
+      const contactMinVisible = clamp(viewportH * 0.18, 110, 170);
 
       const teamSafeMax = Math.max(
         0,
@@ -114,6 +126,11 @@ export default function Home() {
       const contactSafeMax = Math.max(
         0,
         contactTop - teamTop + teamBaseMax - teamMinVisible + teamControlsHeight * 0.9
+      );
+
+      const socialSafeMax = Math.max(
+        0,
+        socialTop - contactTop + contactBaseMax - contactMinVisible
       );
 
       const revealRange = Math.round(
@@ -126,14 +143,21 @@ export default function Home() {
         Math.max(24, teamTop - viewportH * 0.56)
       );
 
+      const socialDelayStart = Math.round(
+        Math.max(contactDelayStart + 40, socialTop - viewportH * 0.62)
+      );
+
       metricsRef.current = {
         openingTop,
         teamTop,
         contactTop,
+        socialTop,
         openingMax: openingBaseMax,
         teamMax: Math.min(teamBaseMax, teamSafeMax),
         contactMax: Math.min(contactBaseMax, contactSafeMax),
+        socialMax: Math.min(socialBaseMax, socialSafeMax),
         contactDelayStart,
+        socialDelayStart,
         revealRange,
         overlayRange,
       };
@@ -147,7 +171,9 @@ export default function Home() {
         openingMax,
         teamMax,
         contactMax,
+        socialMax,
         contactDelayStart,
+        socialDelayStart,
         revealRange,
         overlayRange,
       } = metricsRef.current;
@@ -179,6 +205,7 @@ export default function Home() {
         openingCard.style.transform = "translate3d(0, 0, 0)";
         teamCard.style.transform = "translate3d(0, 0, 0)";
         contactCard.style.transform = "translate3d(0, 0, 0)";
+        socialCard.style.transform = "translate3d(0, 0, 0)";
         ticking = false;
         return;
       }
@@ -241,10 +268,17 @@ export default function Home() {
         0.72,
         contactMax
       );
+      const socialParallax = getDelayedParallax(
+        scroll,
+        socialDelayStart,
+        0.68,
+        socialMax
+      );
 
       openingCard.style.transform = `translate3d(0, ${-openingParallax}px, 0)`;
       teamCard.style.transform = `translate3d(0, ${-teamParallax}px, 0)`;
       contactCard.style.transform = `translate3d(0, ${-contactParallax}px, 0)`;
+      socialCard.style.transform = `translate3d(0, ${-socialParallax}px, 0)`;
 
       ticking = false;
     };
@@ -280,6 +314,7 @@ export default function Home() {
     resizeObserver.observe(openingCard);
     resizeObserver.observe(teamCard);
     resizeObserver.observe(contactCard);
+    resizeObserver.observe(socialCard);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -621,7 +656,7 @@ export default function Home() {
         </div>
       </section>
 
-   <section className="social-card">
+      <section className="social-card" ref={socialRef}>
         <div className="social-card-inner">
           <h2 className="social-title">Social</h2>
 
@@ -648,6 +683,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-          </main>
+    </main>
   );
 }
