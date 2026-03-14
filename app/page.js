@@ -79,14 +79,6 @@ export default function Home() {
       return Math.round(Math.min((scroll - delayStart) * speed, max));
     };
 
-    const solveLinearTargetLocal = (sectionTop, speed, max) => {
-      const saturationPoint = max / speed;
-      const candidate = sectionTop / (1 + speed);
-
-      if (candidate <= saturationPoint) return candidate;
-      return sectionTop - max;
-    };
-
     const measureLayout = () => {
       const viewportH = window.innerHeight;
 
@@ -389,6 +381,21 @@ export default function Home() {
     return false;
   };
 
+  const openMaps = () => {
+    const destination = encodeURIComponent("Marktstraße 133, 46045 Oberhausen");
+    const ua = navigator.userAgent || "";
+
+    const isAppleDevice =
+      /iPhone|iPad|iPod/i.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    const url = isAppleDevice
+      ? `https://maps.apple.com/?daddr=${destination}`
+      : `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   const isOpen = getOpenStatus();
 
   return (
@@ -403,6 +410,7 @@ export default function Home() {
             className={`menu-button ${menuOpen ? "open" : ""}`}
             aria-label="Menü öffnen"
             onClick={() => setMenuOpen(!menuOpen)}
+            type="button"
           >
             <span></span>
             <span></span>
@@ -422,7 +430,7 @@ export default function Home() {
           </div>
 
           <div className="hero-actions">
-            <button className="hero-action" onClick={scrollToOpening}>
+            <button className="hero-action" onClick={scrollToOpening} type="button">
               <div className="hero-icon-wrapper">
                 <svg viewBox="0 0 24 24" className="hero-icon">
                   <circle cx="12" cy="12" r="9" />
@@ -432,7 +440,7 @@ export default function Home() {
               <span>Öffnungszeiten</span>
             </button>
 
-            <button className="hero-action" onClick={scrollToTeam}>
+            <button className="hero-action" onClick={scrollToTeam} type="button">
               <div className="hero-icon-wrapper">
                 <svg viewBox="0 0 24 24" className="hero-icon">
                   <circle cx="9" cy="8" r="3" />
@@ -444,7 +452,7 @@ export default function Home() {
               <span>Unser Team</span>
             </button>
 
-            <button className="hero-action" onClick={scrollToContact}>
+            <button className="hero-action" onClick={scrollToContact} type="button">
               <div className="hero-icon-wrapper">
                 <svg viewBox="0 0 24 24" className="hero-icon">
                   <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" />
@@ -546,6 +554,7 @@ export default function Home() {
               onClick={prevTeam}
               aria-label="Vorheriger Mitarbeiter"
               disabled={teamIndex === 0}
+              type="button"
             >
               ‹
             </button>
@@ -557,6 +566,7 @@ export default function Home() {
                   className={`team-dot-nav ${index === teamIndex ? "active" : ""}`}
                   onClick={() => setTeamIndex(index)}
                   aria-label={`Mitarbeiter ${index + 1}`}
+                  type="button"
                 />
               ))}
             </div>
@@ -566,6 +576,7 @@ export default function Home() {
               onClick={nextTeam}
               aria-label="Nächster Mitarbeiter"
               disabled={teamIndex === teamMembers.length - 1}
+              type="button"
             >
               ›
             </button>
@@ -583,16 +594,27 @@ export default function Home() {
                 <div className="contact-address-label">Adresse</div>
 
                 <div className="contact-address-line contact-address-street">
-                  Marktstr. 133
+                  Marktstraße 133
                 </div>
-                
+
                 <div className="contact-address-line contact-address-city">
                   46045 Oberhausen
                 </div>
 
-                <a className="contact-address-phone" href="tel:020874183626">
-                  0208 / 741 836 26
-                </a>
+                <div className="contact-address-bottom">
+                  <a className="contact-address-phone" href="tel:020874183626">
+                    0208 / 741 836 26
+                  </a>
+
+                  <button
+                    className="contact-go-button"
+                    onClick={openMaps}
+                    type="button"
+                    aria-label="Route zu Marktstraße 133, 46045 Oberhausen öffnen"
+                  >
+                    Los
+                  </button>
+                </div>
               </div>
             </div>
           </div>
