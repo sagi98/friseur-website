@@ -36,7 +36,7 @@ export default function Home() {
       name: "Arshad Al-Khidr",
       image: "/Arshad.png",
       role: "Gründer & Salonleitung",
-      skills: ["Hair & Beard Specialist", "Color & Hairstyling", "ㅤ"],
+      skills: ["Fades & Taper Cuts", "Color & Hairstyling", "Kids Cuts"],
       empty: false,
     },
     {
@@ -51,9 +51,9 @@ export default function Home() {
       ],
       empty: false,
     },
-    { id: 3, name: "Dlo", image: "/Dlo.png", role: "", skills: [], quote: "", empty: false },
-    { id: 4, name: "Rony", image: "/Rony.png", role: "", skills: [], quote: "", empty: false },
-    { id: 5, name: "Sarkawt", image: "/Sarkawt.png", role: "", skills: [], quote: "", empty: false },
+    { id: 3, name: "Dlo", image: "/Dlo.png", role: "Barber & Stylist", skills: ["Fades & Taper Cuts", "Kids Cuts", "Beard Styling"], quote: "", empty: false },
+    { id: 4, name: "Rony", image: "/Rony.png", role: "Hair Stylist", skills: ["Fades & Taper Cuts", "Hairstyling", "Precision Cuts"], quote: "", empty: false },
+    { id: 5, name: "Sarkawt", image: "/Sarkawt.png", role: "Barber & Stylist", skills: ["Classic Cuts", "Hairstyling", "Beard Styling"], quote: "", empty: false },
   ];
 
   useEffect(() => {
