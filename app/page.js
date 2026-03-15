@@ -49,7 +49,6 @@ export default function Home() {
         "Bachelor of Professional Hairstyling",
         "Color & Hairstyling",
       ],
-      quote: "Schönheit liegt im Detail",
       empty: false,
     },
     { id: 3, name: "Dlo", image: "/Dlo.png", role: "", skills: [], quote: "", empty: false },

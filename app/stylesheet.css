@@ -1017,6 +1017,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   gap: clamp(16px, 3vw, 22px);
   background: rgba(248, 246, 243, 0.52);
   backdrop-filter: blur(22px) saturate(1.08);
@@ -1036,6 +1037,16 @@ body {
   font-size: clamp(1.8rem, 5vw, 2.2rem);
   letter-spacing: 0.03em;
   line-height: 1;
+}
+
+ .social-subtitle {
+    margin-top: -4px;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(0.82rem, 2.4vw, 0.92rem);
+    line-height: 1.35;
+    color: rgba(47, 42, 38, 0.62);
+    max-width: 280px;
 }
 
 .social-links {
@@ -1126,20 +1137,19 @@ body {
     0 6px 18px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.95),
     inset 0 -1px 0 rgba(255, 255, 255, 0.28);
-}
+  }
 
 
- .social-title {
-  margin: 0;
-  text-align: center;
-  color: #2f2a26;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  font-size: clamp(1.95rem, 5.4vw, 2.35rem);
-  letter-spacing: 0.025em;
-  line-height: 1;
-}
-
+  .social-title {
+    margin: 0;
+    text-align: center;
+    color: #2f2a26;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: clamp(1.95rem, 5.4vw, 2.35rem);
+    letter-spacing: 0.025em;
+    line-height: 1;
+  }
 
   .social-links {
     gap: 10px;
@@ -1171,13 +1181,4 @@ body {
     min-height: 180px;
   }
 
-  .social-subtitle {
-    margin-top: -4px;
-    text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(0.82rem, 2.4vw, 0.92rem);
-    line-height: 1.35;
-    color: rgba(47, 42, 38, 0.62);
-    max-width: 280px;
-  }
 }
