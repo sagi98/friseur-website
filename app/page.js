@@ -37,7 +37,6 @@ export default function Home() {
       image: "/Arshad.png",
       role: "Gründer & Salonleitung",
       skills: ["Hair & Beard Specialist", "Color & Hairstyling", "ㅤ"],
-      quote: "Ein guter Schnitt macht den Unterschied.",
       empty: false,
     },
     {
@@ -53,9 +52,9 @@ export default function Home() {
       quote: "Schönheit liegt im Detail",
       empty: false,
     },
-    { id: 3, name: "", image: "", role: "", skills: [], quote: "", empty: true },
-    { id: 4, name: "", image: "", role: "", skills: [], quote: "", empty: true },
-    { id: 5, name: "", image: "", role: "", skills: [], quote: "", empty: true },
+    { id: 3, name: "Dlo", image: "/Dlo.png", role: "", skills: [], quote: "", empty: false },
+    { id: 4, name: "Rony", image: "/Rony.png", role: "", skills: [], quote: "", empty: false },
+    { id: 5, name: "Sarkawt", image: "/Sarkawt.png", role: "", skills: [], quote: "", empty: false },
   ];
 
   useEffect(() => {
@@ -508,7 +507,7 @@ export default function Home() {
             <div className="opening-status">
               <span className={`status-dot ${isOpen ? "open" : "closed"}`}></span>
               <span className="status-text">
-                {isOpen ? "Jetzt geöffnet" : "Jetzt geschlossen"}
+                {isOpen ? "Geöffnet" : "Geschlossen"}
               </span>
             </div>
 
@@ -570,7 +569,7 @@ export default function Home() {
                         </ul>
 
                         <div className="team-divider"></div>
-                        <div className="team-quote">„{member.quote}“</div>
+                        {/* <div className="team-quote">„{member.quote}“</div> */}
                       </div>
                     </div>
                   ) : (
@@ -658,12 +657,15 @@ export default function Home() {
 
       <section className="social-card" ref={socialRef}>
         <div className="social-card-inner">
-          <h2 className="social-title">Social</h2>
+          <h2 className="social-title">Folgt uns</h2>
+          <p className="social-subtitle">
+            Auf Instagram und TikTok teilen wir Neuigkeiten, Einblicke und aktuelle Updates.
+          </p>
 
           <div className="social-links">
             <a
               className="social-icon-link"
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/arshad_rewano/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram öffnen"
@@ -673,12 +675,12 @@ export default function Home() {
 
             <a
               className="social-icon-link"
-              href="https://www.tiktok.com/"
+              href="https://www.tiktok.com/@maestro_numero_uno"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok öffnen"
             >
-              <img src="/tiktok-black.png" alt="TikTok" className="social-icon" />
+              <img src="/tiktok-black.png" alt="TikTok" className="social-icon tiktok-icon" />
             </a>
           </div>
         </div>

@@ -1054,15 +1054,21 @@ body {
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(18px) saturate(1.04);
-  -webkit-backdrop-filter: blur(18px) saturate(1.04);
-  border: 1px solid rgba(255, 255, 255, 0.56);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.62),
+    rgba(255, 255, 255, 0.42)
+  );
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+    0 10px 24px rgba(0, 0, 0, 0.05),
+    0 2px 8px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
+
 
 .social-icon-link:active {
   transform: scale(0.97);
@@ -1075,6 +1081,12 @@ body {
   object-fit: contain;
   display: block;
 }
+
+.social-icon.tiktok-icon {
+  width: clamp(34px, 9vw, 44px);
+  height: clamp(34px, 9vw, 44px);
+}
+
 
 @media (hover: hover) and (pointer: fine) {
   .social-icon-link:hover {
@@ -1092,14 +1104,42 @@ body {
   }
 
   .social-card-inner {
-    min-height: 150px;
-    padding: 18px 14px;
-    gap: 14px;
-  }
+  width: 100%;
+  min-height: clamp(170px, 22svh, 210px);
+  border-radius: var(--card-radius);
+  padding: clamp(22px, 5vw, 30px) clamp(16px, 4vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 18px);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.72),
+    rgba(245, 242, 239, 0.58)
+  );
+  backdrop-filter: blur(28px) saturate(1.2);
+  -webkit-backdrop-filter: blur(28px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.08),
+    0 6px 18px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.28);
+}
 
-  .social-title {
-    font-size: clamp(1.65rem, 6vw, 1.95rem);
-  }
+
+ .social-title {
+  margin: 0;
+  text-align: center;
+  color: #2f2a26;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(1.95rem, 5.4vw, 2.35rem);
+  letter-spacing: 0.025em;
+  line-height: 1;
+}
+
 
   .social-links {
     gap: 10px;
@@ -1129,5 +1169,15 @@ body {
 
   .social-card-inner {
     min-height: 180px;
+  }
+
+  .social-subtitle {
+    margin-top: -4px;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(0.82rem, 2.4vw, 0.92rem);
+    line-height: 1.35;
+    color: rgba(47, 42, 38, 0.62);
+    max-width: 280px;
   }
 }
